@@ -7,12 +7,15 @@ import {
     Home48Regular,
     QuestionCircle48Regular,
     Form48Regular,
+    AddSquare48Regular,
 } from '@fluentui/react-icons'
 import { useNavigate } from 'react-router-dom'
 import { PublicRoutes } from '../infrastructure/routes'
 import { generateSomeRandomForms } from '../infrastructure/generator'
 import { FormModel } from '../model/form'
 import { useFormContext } from '../contexts/FormContext'
+import { DangerDialog } from './DangerDialog'
+import { useState } from 'react'
 
 const useStyles = makeStyles({
     leftMenu: {
@@ -33,12 +36,20 @@ export const FormSelector = () => {
     const { dangerouslyRewriteForms } = useFormContext()
     const generateSomeRandomFormsForLocalStorage = () => {
         dangerouslyRewriteForms(generateSomeRandomForms(7))
+        setVisibleDialog(false)
     }
     const { forms, setFormForEditing } = useFormContext()
+    const [visibleDialog, setVisibleDialog] = useState(false)
 
     console.log(forms)
     return (
         <div className={styles.leftMenu}>
+            <DangerDialog
+                visible={visibleDialog}
+                onConfirm={generateSomeRandomFormsForLocalStorage}
+                onClose={() => setVisibleDialog(false)}
+            />
+
             <CompoundButton
                 icon={<Home48Regular />}
                 secondaryContent=""
@@ -50,10 +61,20 @@ export const FormSelector = () => {
                 Home page
             </CompoundButton>
             <CompoundButton
-                icon={<QuestionCircle48Regular />}
-                secondaryContent="Generates some form"
+                icon={<AddSquare48Regular />}
+                secondaryContent=""
                 size="small"
-                onClick={generateSomeRandomFormsForLocalStorage}
+                onClick={() => {}}
+                iconPosition="before"
+                className={styles.menuItem}
+            >
+                Create new form
+            </CompoundButton>
+            <CompoundButton
+                icon={<QuestionCircle48Regular />}
+                secondaryContent="Generates random forms"
+                size="small"
+                onClick={() => setVisibleDialog(true)}
                 iconPosition="before"
                 className={styles.menuItem}
             >
