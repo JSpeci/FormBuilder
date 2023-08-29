@@ -14,6 +14,7 @@ import {
 import { Delete28Regular } from '@fluentui/react-icons'
 import { FormModel } from '../model/form'
 import { useEffect, useState } from 'react'
+import { formatDateTime } from '../infrastructure/helpers'
 
 const useStyles = makeStyles({
     mainPanel: {
@@ -78,7 +79,9 @@ export const FormGeneralInfo: React.FunctionComponent<FormDetailProps> = (
                 />
             </div>
             <div className={styles.item}>
-                <Subtitle2>Created at {model.created.toString()}</Subtitle2>
+                <Subtitle2>
+                    Created at {formatDateTime(model.created)}
+                </Subtitle2>
             </div>
             <div className={styles.item}>
                 <Subtitle2>With id {model.id}</Subtitle2>
