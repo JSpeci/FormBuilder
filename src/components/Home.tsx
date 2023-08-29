@@ -32,7 +32,7 @@ export const Home: React.FunctionComponent = () => {
                     secondaryContent="Lets build some awesome form"
                     size="large"
                     onClick={() => navigate(PublicRoutes.FormBuilder)}
-                    iconPosition="after"
+                    iconPosition="before"
                     className={styles.item}
                 >
                     Form Builder
@@ -41,7 +41,7 @@ export const Home: React.FunctionComponent = () => {
                     icon={<Dentist48Regular />}
                     secondaryContent="Lets test some amazing form"
                     size="large"
-                    iconPosition="after"
+                    iconPosition="before"
                     onClick={() => navigate(PublicRoutes.FormTester)}
                     className={styles.item}
                 >

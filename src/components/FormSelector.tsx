@@ -1,53 +1,79 @@
-import * as React from 'react'
+import {
+    CompoundButton,
+    makeStyles,
+    shorthands,
+} from '@fluentui/react-components'
+import {
+    Home48Regular,
+    QuestionCircle48Regular,
+    Form48Regular,
+} from '@fluentui/react-icons'
 import { useNavigate } from 'react-router-dom'
 import { PublicRoutes } from '../infrastructure/routes'
-import { CompoundButton, makeStyles } from '@fluentui/react-components'
-import { AddSquare48Regular, Dentist48Regular } from '@fluentui/react-icons'
+import { generateSomeRandomForms } from '../infrastructure/generator'
+import { FormModel } from '../model/form'
+import { useFormContext } from '../contexts/FormContext'
 
 const useStyles = makeStyles({
-    homeStack: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
+    leftMenu: {
+        width: '20%',
+        backgroundColor: '#f0f0f0',
+        ...shorthands.padding('1rem'),
     },
-    item: {
-        marginBottom: '1rem',
-        minWidth: '17rem',
-    },
-    navContainer: {
+    menuItem: {
+        marginBottom: '0.5rem',
+        cursor: 'pointer',
         width: '100%',
-        marginTop: '5rem',
     },
 })
 
-export const FormSelector: React.FunctionComponent = () => {
-    const navigate = useNavigate()
+export const FormSelector = () => {
     const styles = useStyles()
+    const navigate = useNavigate()
+    const { dangerouslyRewriteForms } = useFormContext()
+    const generateSomeRandomFormsForLocalStorage = () => {
+        dangerouslyRewriteForms(generateSomeRandomForms(7))
+    }
+    const { forms, setFormForEditing } = useFormContext()
 
+    console.log(forms)
     return (
-        <nav className={styles.navContainer}>
-            <div className={styles.homeStack}>
+        <div className={styles.leftMenu}>
+            <CompoundButton
+                icon={<Home48Regular />}
+                secondaryContent=""
+                size="small"
+                onClick={() => navigate(PublicRoutes.Home)}
+                iconPosition="before"
+                className={styles.menuItem}
+            >
+                Home page
+            </CompoundButton>
+            <CompoundButton
+                icon={<QuestionCircle48Regular />}
+                secondaryContent="Generates some form"
+                size="small"
+                onClick={generateSomeRandomFormsForLocalStorage}
+                iconPosition="before"
+                className={styles.menuItem}
+            >
+                Generate random stuff
+            </CompoundButton>
+            {forms.map((form: FormModel) => (
                 <CompoundButton
-                    icon={<AddSquare48Regular />}
-                    secondaryContent="Lets build some awesome form"
-                    size="large"
-                    onClick={() => navigate(PublicRoutes.FormBuilder)}
-                    iconPosition="after"
-                    className={styles.item}
+                    icon={<Form48Regular />}
+                    secondaryContent={form.description || ''}
+                    size="small"
+                    iconPosition="before"
+                    className={styles.menuItem}
+                    onClick={() => {
+                        setFormForEditing(form)
+                    }}
+                    key={form.name}
                 >
-                    Form Builder
+                    {form.name}
                 </CompoundButton>
-                <CompoundButton
-                    icon={<Dentist48Regular />}
-                    secondaryContent="Lets test some amazing form"
-                    size="large"
-                    iconPosition="after"
-                    onClick={() => navigate(PublicRoutes.FormTester)}
-                    className={styles.item}
-                >
-                    Form Tester
-                </CompoundButton>
-            </div>
-        </nav>
+            ))}
+        </div>
     )
 }

@@ -12,7 +12,10 @@ export type FormField = {
     validations?: ValidationRule[]
 }
 
-export type Form = {
+export type FormModel = {
+    id: number
+    name: string
+    description?: string
     created: Date
-    formFields: FormField
+    formFields: FormField[]
 }

@@ -1,9 +1,9 @@
 export enum ValidationType {
-    IsMandatory,
-    GreaterThan,
-    LessThan,
-    StartsWithText,
-    ContainsText,
+    IsMandatory = 'Is mandatory',
+    GreaterThan = 'Greater than',
+    LessThan = 'Less than',
+    StartsWithText = 'Starts with',
+    ContainsText = 'Contains text',
 }
 
 export interface ValidationRule {
