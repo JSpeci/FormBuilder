@@ -80,7 +80,7 @@ export const FormGeneralInfo: React.FunctionComponent<FormDetailProps> = (
             </div>
             <div className={styles.item}>
                 <Subtitle2>
-                    Created at {formatDateTime(model.created)}
+                    Created at {formatDateTime(new Date(model.created))}
                 </Subtitle2>
             </div>
             <div className={styles.item}>

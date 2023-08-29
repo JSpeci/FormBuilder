@@ -5,7 +5,7 @@ import {
     makeStyles,
     shorthands,
 } from '@fluentui/react-components'
-import { QuestionBuilder } from './QuestionBuilder'
+import { QuestionBuilder } from './QuestionBuilder/QuestionBuilder'
 import { FormQuestions } from './FormQuestions'
 import { useFormContext } from '../contexts/FormContext'
 import { FormGeneralInfo } from './FormGeneralInfo'
@@ -15,12 +15,13 @@ const useStyles = makeStyles({
         width: '100%',
         ...shorthands.padding('1rem'),
         backgroundColor: '#ffffff',
-        display: 'flex', // Set display to flex
-        flexDirection: 'column', // Set flex direction to column
+        display: 'flex',
+        flexDirection: 'column',
     },
     item: {
         marginBottom: '1rem',
         minWidth: '17rem',
+        display: 'flex',
     },
 })
 
@@ -53,11 +54,6 @@ export const FormEditor = () => {
                                 setFormForEditing(-1)
                             }}
                         />
-                    </div>
-                    <div className={styles.item}>
-                        <Divider appearance="strong" />
-                    </div>
-                    <div className={styles.item}>
                         <QuestionBuilder />
                     </div>
                     <div className={styles.item}>

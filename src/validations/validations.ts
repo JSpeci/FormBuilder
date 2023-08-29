@@ -57,21 +57,21 @@ export class Validator {
     }
 }
 
-// Example usage
-const rules: ValidationRule[] = [
-    { type: ValidationType.IsMandatory, message: 'Field is mandatory.' },
-    {
-        type: ValidationType.StartsWithText,
-        message: "Field must start with 'ABC'.",
-        textValue: 'ABC',
-    },
-    // Add more validation rules here
-]
+// // Example usage
+// const rules: ValidationRule[] = [
+//     { type: ValidationType.IsMandatory, message: 'Field is mandatory.' },
+//     {
+//         type: ValidationType.StartsWithText,
+//         message: "Field must start with 'ABC'.",
+//         textValue: 'ABC',
+//     },
+//     // Add more validation rules here
+// ]
 
-const valueToValidate = 'ABCD' // Example value
-const validationMessage = Validator.validate(valueToValidate, rules)
-if (validationMessage) {
-    console.log(validationMessage)
-} else {
-    console.log('Validation passed.')
-}
+// const valueToValidate = 'ABCD' // Example value
+// const validationMessage = Validator.validate(valueToValidate, rules)
+// if (validationMessage) {
+//     console.log(validationMessage)
+// } else {
+//     console.log('Validation passed.')
+// }
