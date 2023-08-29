@@ -6,7 +6,7 @@ import {
     shorthands,
 } from '@fluentui/react-components'
 import { QuestionBuilder } from './QuestionBuilder'
-import { FormTool } from './FormTool'
+import { FormQuestions } from './FormQuestions'
 import { useFormContext } from '../contexts/FormContext'
 import { FormGeneralInfo } from './FormGeneralInfo'
 
@@ -56,7 +56,7 @@ export const FormEditor = () => {
                     </div>
                     <div className={styles.item}>
                         {selectedFormForEditing && (
-                            <FormTool
+                            <FormQuestions
                                 formFields={selectedFormForEditing?.formFields}
                             />
                         )}
