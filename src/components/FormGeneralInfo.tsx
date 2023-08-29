@@ -1,6 +1,7 @@
 import * as React from 'react'
 import {
     Button,
+    CompoundButton,
     Input,
     Label,
     Subtitle1,
@@ -10,6 +11,7 @@ import {
     shorthands,
     useId,
 } from '@fluentui/react-components'
+import { Delete28Regular } from '@fluentui/react-icons'
 import { FormModel } from '../model/form'
 import { useEffect, useState } from 'react'
 
@@ -34,6 +36,7 @@ const useStyles = makeStyles({
 interface FormDetailProps {
     model: FormModel
     onSave: (name: string, description: string) => void
+    onDelete: (id: number) => void
 }
 
 export const FormGeneralInfo: React.FunctionComponent<FormDetailProps> = (
@@ -70,7 +73,7 @@ export const FormGeneralInfo: React.FunctionComponent<FormDetailProps> = (
                 <Label htmlFor={descriptionInput}>Description</Label>
                 <Textarea
                     id={descriptionInput}
-                    value={description}
+                    value={description || ''}
                     onChange={(e) => setDescription(e.target.value)}
                 />
             </div>
@@ -84,6 +87,18 @@ export const FormGeneralInfo: React.FunctionComponent<FormDetailProps> = (
                 <Button onClick={() => props.onSave(name, description || '')}>
                     Save Changes
                 </Button>
+            </div>
+            <div className={styles.item}>
+                <CompoundButton
+                    icon={<Delete28Regular />}
+                    secondaryContent="Assure yourself to do it"
+                    size="small"
+                    onClick={() => {
+                        props.onDelete(model.id)
+                    }}
+                >
+                    Delete this form
+                </CompoundButton>
             </div>
         </div>
     )

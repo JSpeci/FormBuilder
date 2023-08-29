@@ -26,7 +26,12 @@ const useStyles = makeStyles({
 
 export const FormEditor = () => {
     const styles = useStyles()
-    const { selectedFormForEditing, updateExistingForm } = useFormContext()
+    const {
+        selectedFormForEditing,
+        updateExistingForm,
+        deleteForm,
+        setFormForEditing,
+    } = useFormContext()
     return (
         <div className={styles.mainPanel}>
             {selectedFormForEditing ? (
@@ -42,6 +47,10 @@ export const FormEditor = () => {
                                     selectedFormForEditing.id,
                                     updated
                                 )
+                            }}
+                            onDelete={(id: number) => {
+                                deleteForm(id)
+                                setFormForEditing(-1)
                             }}
                         />
                     </div>

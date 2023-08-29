@@ -12,7 +12,6 @@ import {
     createTableColumn,
     Button,
 } from '@fluentui/react-components'
-
 import { Delete28Regular } from '@fluentui/react-icons'
 import { FormField } from '../model/form'
 import { ValidationRule } from '../validations/validations'
