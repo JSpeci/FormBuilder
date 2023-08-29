@@ -1,13 +1,14 @@
 import React from 'react'
 import {
     Divider,
-    Title1,
+    Subtitle1,
     makeStyles,
     shorthands,
 } from '@fluentui/react-components'
 import { QuestionBuilder } from './QuestionBuilder'
 import { FormTool } from './FormTool'
 import { useFormContext } from '../contexts/FormContext'
+import { FormGeneralInfo } from './FormGeneralInfo'
 
 const useStyles = makeStyles({
     mainPanel: {
@@ -25,26 +26,47 @@ const useStyles = makeStyles({
 
 export const FormEditor = () => {
     const styles = useStyles()
-    const { selectedFormForEditing } = useFormContext()
+    const { selectedFormForEditing, updateExistingForm } = useFormContext()
     return (
         <div className={styles.mainPanel}>
-            <div className={styles.item}>
-                <Title1>Let's build some form</Title1>
-            </div>
-            <div className={styles.item}>
-                <Divider appearance="strong" />
-            </div>
-            <div className={styles.item}>
-                <QuestionBuilder />
-            </div>
-            <div className={styles.item}>
-                <Divider appearance="strong" />
-            </div>
-            <div className={styles.item}>
-                {selectedFormForEditing && (
-                    <FormTool formFields={selectedFormForEditing?.formFields} />
-                )}
-            </div>
+            {selectedFormForEditing ? (
+                <>
+                    <div className={styles.item}>
+                        <FormGeneralInfo
+                            model={selectedFormForEditing}
+                            onSave={(n, d) => {
+                                const updated = { ...selectedFormForEditing }
+                                updated.description = d
+                                updated.name = n
+                                updateExistingForm(
+                                    selectedFormForEditing.id,
+                                    updated
+                                )
+                            }}
+                        />
+                    </div>
+                    <div className={styles.item}>
+                        <Divider appearance="strong" />
+                    </div>
+                    <div className={styles.item}>
+                        <QuestionBuilder />
+                    </div>
+                    <div className={styles.item}>
+                        <Divider appearance="strong" />
+                    </div>
+                    <div className={styles.item}>
+                        {selectedFormForEditing && (
+                            <FormTool
+                                formFields={selectedFormForEditing?.formFields}
+                            />
+                        )}
+                    </div>
+                </>
+            ) : (
+                <div className={styles.item}>
+                    <Subtitle1>Choose some formular</Subtitle1>
+                </div>
+            )}
         </div>
     )
 }

@@ -13,7 +13,7 @@ export type FormsContextType = {
     setFormForEditing: (id: number) => void
     setFormForTesting: (id: number) => void
     createNewForm: () => number
-    updateExistingForm: (id: number) => void
+    updateExistingForm: (id: number, updated: FormModel) => void
 }
 
 export const FormContext = createContext<FormsContextType | null>(null)
@@ -47,9 +47,11 @@ export const FormProvider: React.FC<FormProviderProps> = (
         return id
     }
 
-    const updateExistingForm = (id: number) => {
-        // update logic here
-        console.log(id)
+    const updateExistingForm = (id: number, updated: FormModel) => {
+        const updatedArray = forms.map((obj: FormModel) =>
+            obj.id === id ? updated : obj
+        )
+        setForms([...updatedArray])
     }
 
     const setFormForTesting = (id: number | undefined) => {
