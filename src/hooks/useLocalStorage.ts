@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 // Custom hook for managing local storage
 export const useLocalStorage = (key: string, initialValue: any) => {
@@ -6,10 +6,9 @@ export const useLocalStorage = (key: string, initialValue: any) => {
     const initial = storedValue ? JSON.parse(storedValue) : initialValue
     const [value, setValue] = useState(initial)
 
-    const setValueWithStorage = (newValue: string) => {
-        localStorage.setItem(key, JSON.stringify(newValue))
-        setValue(newValue)
-    }
+    useEffect(() => {
+        localStorage.setItem(key, JSON.stringify(value)), value
+    })
 
-    return [value, setValueWithStorage]
+    return [value, setValue]
 }

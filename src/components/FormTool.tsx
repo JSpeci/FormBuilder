@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Subtitle1, makeStyles, shorthands } from '@fluentui/react-components'
 import { ValidationRule, ValidationType } from '../validations/validations'
 import { FormField, InputType } from '../model/form'
@@ -24,39 +24,14 @@ export interface FormToolProps {
 export const FormTool: React.FunctionComponent<FormToolProps> = (
     props: FormToolProps
 ) => {
-    const [formData, setFormData] = useState({})
-
-    const handleInputChange = (fieldName: string, value: string) => {
-        setFormData((prevData) => ({ ...prevData, [fieldName]: value }))
-    }
-
-    useEffect(() => {
-        // This effect will run whenever 'data' changes
-        console.log('Data has changed:', formData)
-        // You can update or do other operations related to the changed data here
-    }, [formData])
-
     const renderInput = (field: FormField) => {
         switch (field.type) {
             case InputType.Text:
             case InputType.Numeric:
-                return (
-                    <input
-                        type={field.type === InputType.Text ? 'text' : 'number'}
-                        onChange={(e) =>
-                            handleInputChange(field.question, e.target.value)
-                        }
-                        value={''}
-                    />
-                )
+                return <input />
             case InputType.YesNo:
                 return (
-                    <select
-                        onChange={(e) =>
-                            handleInputChange(field.question, e.target.value)
-                        }
-                        value={''}
-                    >
+                    <select>
                         <option value="">Select</option>
                         <option value="Yes">Yes</option>
                         <option value="No">No</option>

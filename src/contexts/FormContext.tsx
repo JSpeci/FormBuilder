@@ -2,15 +2,17 @@ import React, { createContext, useContext, useState } from 'react'
 import { FormModel } from '../model/form'
 import { useLocalStorage } from '../hooks/useLocalStorage'
 import { LOCAL_STORAGE_KEY } from '../constants'
+import { generateId } from '../infrastructure/generateId'
+import { generateSomeRandomForms } from '../infrastructure/generator'
 
 export type FormsContextType = {
     forms: FormModel[]
-    dangerouslyRewriteForms: (forms: FormModel[]) => void
+    dangerouslyRewriteForms: () => void
     selectedFormForEditing?: FormModel
     selectedFormForTesting?: FormModel
-    setFormForEditing: (form: FormModel) => void
-    setFormForTesting: (form: FormModel) => void
-    createNewForm: (form: FormModel) => void
+    setFormForEditing: (id: number) => void
+    setFormForTesting: (id: number) => void
+    createNewForm: () => number
     updateExistingForm: (id: number) => void
 }
 
@@ -31,9 +33,18 @@ export const FormProvider: React.FC<FormProviderProps> = (
         FormModel | undefined
     >()
 
-    const createNewForm = (form: FormModel) => {
+    const createNewForm = () => {
         // Updates local storage when a new form is created
-        setForms([...forms, form])
+        const id = generateId()
+        const newForm: FormModel = {
+            id,
+            name: 'New form',
+            description: 'Empty form to be filled up',
+            created: new Date(),
+            formFields: [],
+        }
+        setForms([newForm, ...forms])
+        return id
     }
 
     const updateExistingForm = (id: number) => {
@@ -41,16 +52,18 @@ export const FormProvider: React.FC<FormProviderProps> = (
         console.log(id)
     }
 
-    const setFormForTesting = (form: FormModel | undefined) => {
-        setSelectedFormForTesting(form)
+    const setFormForTesting = (id: number | undefined) => {
+        const found = (forms as FormModel[]).find((f: FormModel) => f.id === id)
+        found && setSelectedFormForTesting(found)
     }
 
-    const setFormForEditing = (form: FormModel | undefined) => {
-        setSelectedFormForEditing(form)
+    const setFormForEditing = (id: number | undefined) => {
+        const found = (forms as FormModel[]).find((f: FormModel) => f.id === id)
+        setSelectedFormForEditing(found)
     }
 
-    const dangerouslyRewriteForms = (forms: FormModel[]) => {
-        setForms([...forms])
+    const dangerouslyRewriteForms = () => {
+        setForms([...generateSomeRandomForms(7)])
         setFormForEditing(undefined)
         setFormForTesting(undefined)
     }

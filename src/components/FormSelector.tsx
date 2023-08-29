@@ -11,7 +11,6 @@ import {
 } from '@fluentui/react-icons'
 import { useNavigate } from 'react-router-dom'
 import { PublicRoutes } from '../infrastructure/routes'
-import { generateSomeRandomForms } from '../infrastructure/generator'
 import { FormModel } from '../model/form'
 import { useFormContext } from '../contexts/FormContext'
 import { DangerDialog } from './DangerDialog'
@@ -34,22 +33,19 @@ export const FormSelector = () => {
     const styles = useStyles()
     const navigate = useNavigate()
     const { dangerouslyRewriteForms } = useFormContext()
-    const generateSomeRandomFormsForLocalStorage = () => {
-        dangerouslyRewriteForms(generateSomeRandomForms(7))
-        setVisibleDialog(false)
-    }
-    const { forms, setFormForEditing } = useFormContext()
+    const { forms, setFormForEditing, createNewForm } = useFormContext()
     const [visibleDialog, setVisibleDialog] = useState(false)
 
-    console.log(forms)
     return (
         <div className={styles.leftMenu}>
             <DangerDialog
                 visible={visibleDialog}
-                onConfirm={generateSomeRandomFormsForLocalStorage}
+                onConfirm={() => {
+                    dangerouslyRewriteForms()
+                    setVisibleDialog(false)
+                }}
                 onClose={() => setVisibleDialog(false)}
             />
-
             <CompoundButton
                 icon={<Home48Regular />}
                 secondaryContent=""
@@ -64,7 +60,9 @@ export const FormSelector = () => {
                 icon={<AddSquare48Regular />}
                 secondaryContent=""
                 size="small"
-                onClick={() => {}}
+                onClick={() => {
+                    createNewForm()
+                }}
                 iconPosition="before"
                 className={styles.menuItem}
             >
@@ -88,9 +86,9 @@ export const FormSelector = () => {
                     iconPosition="before"
                     className={styles.menuItem}
                     onClick={() => {
-                        setFormForEditing(form)
+                        setFormForEditing(form.id)
                     }}
-                    key={form.name}
+                    key={form.id}
                 >
                     {form.name}
                 </CompoundButton>

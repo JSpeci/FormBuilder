@@ -1,5 +1,6 @@
 import { FormField, InputType, FormModel } from '../model/form'
 import { ValidationRule, ValidationType } from '../validations/validations'
+import { generateId } from './generateId'
 
 export const generateSomeRandomForms = (howManyForms = 7) => {
     // Example usage
@@ -94,7 +95,7 @@ const generateRandomForm = (): FormModel => {
     const created = new Date()
     const formFields: FormField[] = []
     const name = `Random form ${Math.floor(Math.random() * 100)}`
-    const id = Math.floor(Math.random() * 100000)
+    const id = generateId()
     const description =
         Math.random() < 0.5 ? 'Description of my formular is short' : undefined
 
