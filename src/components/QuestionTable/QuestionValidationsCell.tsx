@@ -13,6 +13,9 @@ import {
 import { ValidationRule, ValidationType } from '../../validations/validations'
 import { Add16Regular } from '@fluentui/react-icons'
 import { useFormContext } from '../../contexts/FormContext'
+import { useState } from 'react'
+import { useEditValidationContext } from '../../contexts/EditValidationContext'
+import { ValidationDialog } from './ValidationDialog'
 const useStyles = makeStyles({
     container: {
         display: 'flex',
@@ -35,6 +38,22 @@ export const QuestionValidationsCell: React.FunctionComponent<
     const styles = useStyles()
     const { deleteValidationFromSelectedForm } = useFormContext()
 
+    const { validation, startEditingValidation } = useEditValidationContext()
+    const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
+
+    const handleEditClick = (validation: ValidationRule) => {
+        startEditingValidation(validation, false)
+        setIsEditDialogOpen(true)
+    }
+
+    const handleEditDialogConfirm = (updatedValidation: ValidationRule) => {
+        // Apply the changes to your data or context state
+        // Close the edit dialog
+        console.log(updatedValidation)
+
+        setIsEditDialogOpen(false)
+    }
+
     return (
         <div className={styles.container}>
             <div className={styles.validationRectangle}>
@@ -53,7 +72,13 @@ export const QuestionValidationsCell: React.FunctionComponent<
                             <MenuList>
                                 {validation.type !==
                                     ValidationType.IsMandatory && (
-                                    <MenuItem>Edit</MenuItem>
+                                    <MenuItem
+                                        onClick={() =>
+                                            handleEditClick(validation)
+                                        }
+                                    >
+                                        Edit
+                                    </MenuItem>
                                 )}
                                 <MenuItem
                                     onClick={() =>
@@ -69,6 +94,14 @@ export const QuestionValidationsCell: React.FunctionComponent<
                     </Menu>
                 </div>
             ))}
+            {isEditDialogOpen && validation && (
+                <ValidationDialog
+                    visible={isEditDialogOpen}
+                    onClose={() => setIsEditDialogOpen(false)}
+                    onConfirm={handleEditDialogConfirm}
+                    validation={validation}
+                />
+            )}
         </div>
     )
 }

@@ -2,6 +2,7 @@ import React from 'react'
 import { Subtitle1, makeStyles, shorthands } from '@fluentui/react-components'
 import { FormQuestion } from '../../model/form'
 import { QuestionsTable } from './QuestionsTable'
+import { EditValidationContextProvider } from '../../contexts/EditValidationContext'
 
 const useStyles = makeStyles({
     mainPanel: {
@@ -31,7 +32,9 @@ export const FormQuestions: React.FunctionComponent<FormToolProps> = (
                 <Subtitle1>Questions in form</Subtitle1>
             </div>
             <div className={styles.item}>
-                <QuestionsTable items={props.formQuestions} />
+                <EditValidationContextProvider>
+                    <QuestionsTable items={props.formQuestions} />
+                </EditValidationContextProvider>
             </div>
         </div>
     )

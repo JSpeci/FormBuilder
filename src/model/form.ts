@@ -39,3 +39,14 @@ export const inputTypesPossibleValidationTypes = (type: InputType) => {
             return [ValidationType.IsMandatory]
     }
 }
+
+export const isValidationTypeNumeric = (
+    validationType: ValidationType
+): boolean => {
+    const numericValidationTypes = [
+        ValidationType.GreaterThan,
+        ValidationType.LessThan,
+    ]
+
+    return numericValidationTypes.includes(validationType)
+}
