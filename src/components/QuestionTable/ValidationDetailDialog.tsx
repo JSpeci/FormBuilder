@@ -50,6 +50,7 @@ interface ValidationDialogProps {
     onConfirm: (updatedValidation: ValidationRule) => void
     validation: ValidationRule
     isEditing?: boolean
+    possibleValidationTypes: string[]
 }
 
 export const ValidationDetailDialog: React.FC<ValidationDialogProps> = (
@@ -124,9 +125,7 @@ export const ValidationDetailDialog: React.FC<ValidationDialogProps> = (
                                         <TypeSelectorDropdown
                                             label="Validation type"
                                             options={
-                                                Object.values(
-                                                    ValidationType
-                                                ) as string[]
+                                                props.possibleValidationTypes
                                             }
                                             onChange={(v) =>
                                                 handleFieldChange('type', v[0])

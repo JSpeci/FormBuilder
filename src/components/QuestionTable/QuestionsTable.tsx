@@ -73,6 +73,7 @@ const columns: TableColumnDefinition<FormQuestion>[] = [
             return (
                 <QuestionValidationsCell
                     questionId={item.questionId}
+                    inputType={item.type}
                     validations={item.validations || []}
                 />
             )

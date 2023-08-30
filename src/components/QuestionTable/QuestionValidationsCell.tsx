@@ -17,6 +17,7 @@ import { useState } from 'react'
 import { useEditValidationContext } from '../../contexts/EditValidationContext'
 import { ValidationDetailDialog } from './ValidationDetailDialog'
 import { generateId } from '../../infrastructure/generateId'
+import { InputType, inputTypesPossibleValidationTypes } from '../../model/form'
 const useStyles = makeStyles({
     container: {
         display: 'flex',
@@ -32,6 +33,7 @@ const useStyles = makeStyles({
 
 interface QuestionValidationsCellProps {
     questionId: number
+    inputType: InputType
     validations: ValidationRule[]
 }
 
@@ -68,11 +70,11 @@ export const QuestionValidationsCell: React.FunctionComponent<
 
     const handleCreateNewValidation = () => {
         const newValidation: ValidationRule = {
-            type: ValidationType.ContainsText,
-            message: '',
+            type: ValidationType.IsMandatory,
+            message: 'Answer is mandatory',
             validationId: generateId(),
             numericValue: undefined,
-            textValue: '',
+            textValue: undefined,
         }
         startEditingValidation(newValidation, true)
         setIsEditDialogOpen(true)
@@ -125,6 +127,9 @@ export const QuestionValidationsCell: React.FunctionComponent<
                     onConfirm={handleEditDialogConfirm}
                     validation={validation}
                     isEditing={!isNewValidation}
+                    possibleValidationTypes={inputTypesPossibleValidationTypes(
+                        props.inputType
+                    )}
                 />
             )}
         </div>
