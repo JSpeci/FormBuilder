@@ -4,7 +4,7 @@ import { useLocalStorage } from '../hooks/useLocalStorage'
 import { LOCAL_STORAGE_KEY } from '../constants'
 import { generateId } from '../infrastructure/generateId'
 import { generateSomeRandomForms } from '../infrastructure/generator'
-import { ValidationRule } from '../validations/validations'
+import { ValidationRule, ValidationType } from '../validations/validations'
 
 export type FormsContextType = {
     forms: FormModel[]
@@ -169,6 +169,20 @@ export const FormProvider: React.FC<FormProviderProps> = (
             const updatedFormQuestions =
                 selectedFormForEditing.formQuestions.map((question) => {
                     if (question.questionId === questionId) {
+                        // Check if a 'IsMandatory' validation already exists
+                        const isMandatoryExists = question.validations?.some(
+                            (validation) =>
+                                validation.type === ValidationType.IsMandatory
+                        )
+
+                        // If 'IsMandatory' validation exists, don't add a new one
+                        if (
+                            newValidation.type === ValidationType.IsMandatory &&
+                            isMandatoryExists
+                        ) {
+                            return question
+                        }
+
                         const updatedValidations = [
                             ...(question.validations || []),
                             newValidation,
