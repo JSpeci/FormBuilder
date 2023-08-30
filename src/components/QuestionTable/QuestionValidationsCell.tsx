@@ -1,5 +1,15 @@
 import * as React from 'react'
-import { makeStyles, shorthands } from '@fluentui/react-components'
+import {
+    makeStyles,
+    shorthands,
+    Menu,
+    MenuButton,
+    MenuItem,
+    MenuList,
+    MenuPopover,
+    MenuTrigger,
+    Button,
+} from '@fluentui/react-components'
 import { ValidationRule } from '../../validations/validations'
 const useStyles = makeStyles({
     container: {
@@ -14,7 +24,7 @@ const useStyles = makeStyles({
 })
 
 interface QuestionValidationsCellProps {
-    validations: ValidationRule[] // Pass the validation rules as a prop
+    validations: ValidationRule[]
 }
 
 export const QuestionValidationsCell: React.FunctionComponent<
@@ -24,9 +34,23 @@ export const QuestionValidationsCell: React.FunctionComponent<
 
     return (
         <div className={styles.container}>
+            <div className={styles.validationRectangle}>
+                <Button>+</Button>
+            </div>
             {props.validations.map((validation, index) => (
                 <div key={index} className={styles.validationRectangle}>
-                    {validation.message}
+                    <Menu>
+                        <MenuTrigger disableButtonEnhancement>
+                            <MenuButton>{validation.message}</MenuButton>
+                        </MenuTrigger>
+
+                        <MenuPopover>
+                            <MenuList>
+                                <MenuItem>Remove</MenuItem>
+                                <MenuItem>Edit</MenuItem>
+                            </MenuList>
+                        </MenuPopover>
+                    </Menu>
                 </div>
             ))}
         </div>

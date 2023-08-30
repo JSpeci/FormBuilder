@@ -11,6 +11,7 @@ import {
     TableColumnDefinition,
     createTableColumn,
     Button,
+    TableColumnSizingOptions,
 } from '@fluentui/react-components'
 
 import { Delete28Regular } from '@fluentui/react-icons'
@@ -82,7 +83,7 @@ const columns: TableColumnDefinition<FormQuestion>[] = [
         renderCell: (item) => {
             const { deleteQuestionFromSelectedForm } = useFormContext()
             return (
-                <TableCellLayout>
+                <TableCellLayout style={{ textAlign: 'end' }}>
                     <Button
                         appearance="transparent"
                         onClick={() => {
@@ -101,6 +102,28 @@ interface QuestionsTableProps {
     items: FormQuestion[]
 }
 
+const columnSizingOptions: TableColumnSizingOptions = {
+    action: {
+        minWidth: 80,
+        defaultWidth: 50,
+    },
+    type: {
+        defaultWidth: 100,
+        minWidth: 80,
+        idealWidth: 80,
+    },
+    // validations: {
+    //     defaultWidth: 700,
+    //     minWidth: 600,
+    //     idealWidth: 700,
+    // },
+    question: {
+        defaultWidth: 300,
+        minWidth: 200,
+        idealWidth: 250,
+    },
+}
+
 export const QuestionsTable: React.FC<QuestionsTableProps> = (props) => {
     const defaultSortState = React.useMemo<
         Parameters<NonNullable<DataGridProps['onSortChange']>>[1]
@@ -112,6 +135,8 @@ export const QuestionsTable: React.FC<QuestionsTableProps> = (props) => {
             columns={columns}
             sortable
             defaultSortState={defaultSortState}
+            resizableColumns
+            columnSizingOptions={columnSizingOptions}
         >
             <DataGridHeader>
                 <DataGridRow>
