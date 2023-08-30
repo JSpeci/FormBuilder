@@ -6,7 +6,7 @@ import {
     shorthands,
     useId,
 } from '@fluentui/react-components'
-import { InputType, mapInputTypeToValidationTypes } from '../../model/form'
+import { InputType, inputTypesPossibleValidationTypes } from '../../model/form'
 import { useState } from 'react'
 import { useNewQuestionContext } from '../../contexts/NewQuestionContext'
 import { ValidationRule, ValidationType } from '../../validations/validations'
@@ -36,7 +36,7 @@ export const CreateValidationsForField: React.FC<
         <>
             <div className={styles.root}>
                 <Label htmlFor={questionType}>Question validations</Label>
-                {mapInputTypeToValidationTypes(props.type).map(
+                {inputTypesPossibleValidationTypes(props.type).map(
                     (validationType) => (
                         <ValidationWithValueAddRow
                             label={validationType}

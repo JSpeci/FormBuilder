@@ -1,4 +1,9 @@
-import { FormQuestion, InputType, FormModel } from '../model/form'
+import {
+    FormQuestion,
+    InputType,
+    FormModel,
+    inputTypesPossibleValidationTypes,
+} from '../model/form'
 import { ValidationRule, ValidationType } from '../validations/validations'
 import { generateId } from './generateId'
 
@@ -17,33 +22,53 @@ const getRandomEnumValue = (enumType: any): any => {
     return values[randomIndex]
 }
 
-const getRandomValidationForInputType = (
-    fieldType: InputType
-): ValidationType => {
-    switch (fieldType) {
-        case InputType.Numeric:
-            return Math.floor(Math.random() * 2) % 2 === 0
-                ? ValidationType.GreaterThan
-                : ValidationType.LessThan
-        case InputType.Text:
-            return Math.floor(Math.random() * 2) % 2 === 0
-                ? ValidationType.ContainsText
-                : ValidationType.StartsWithText
-        case InputType.YesNo:
-            return ValidationType.IsMandatory
-    }
-}
-
 const getRandomFieldFromArray = (values: string[]): any => {
     const randomIndex = Math.floor(Math.random() * values.length)
     return values[randomIndex]
 }
 
-const generateRandomValidation = (fieldType: InputType): ValidationRule => {
-    const validationType = getRandomValidationForInputType(fieldType)
+const generateRandomValidations = (fieldType: InputType): ValidationRule[] => {
+    const possibleValidationTypes = inputTypesPossibleValidationTypes(fieldType)
+    const validations: ValidationRule[] = []
+
+    // Ensure IsMandatory is included once
+    if (possibleValidationTypes.includes(ValidationType.IsMandatory)) {
+        const mandatoryValidation = generateValidationByType(
+            ValidationType.IsMandatory
+        )
+        validations.push(mandatoryValidation)
+    }
+
+    // Generate additional random validations
+    const additionalValidationTypes = possibleValidationTypes.filter(
+        (type) => type !== ValidationType.IsMandatory
+    )
+
+    while (additionalValidationTypes.length > 0) {
+        const randomValidationType = getRandomFieldFromArray(
+            additionalValidationTypes
+        )
+        if (randomValidationType) {
+            const validation = generateValidationByType(randomValidationType)
+            validations.push(validation)
+            additionalValidationTypes.splice(
+                additionalValidationTypes.indexOf(randomValidationType),
+                1
+            )
+        } else {
+            break // No more validation types available
+        }
+    }
+
+    return validations
+}
+
+const generateValidationByType = (
+    validationType: ValidationType
+): ValidationRule => {
     const validation: ValidationRule = {
         type: validationType,
-        message: `answer ${validationType} `,
+        message: `Answer ${validationType}`,
     }
 
     if (
@@ -51,15 +76,13 @@ const generateRandomValidation = (fieldType: InputType): ValidationRule => {
         validationType === ValidationType.ContainsText
     ) {
         validation.textValue = 'SomeText'
-        validation.message = `answer ${validationType} ${validation.textValue}`
+        validation.message = `${validationType} ${validation.textValue}`
     } else if (
         validationType === ValidationType.GreaterThan ||
         validationType === ValidationType.LessThan
     ) {
         validation.numericValue = Math.floor(Math.random() * 100)
-        validation.message = `answer ${validationType} ${validation.numericValue}`
-    } else if (validationType === ValidationType.IsMandatory) {
-        validation.message = `answer ${validationType} `
+        validation.message = `${validationType} ${validation.numericValue}`
     }
 
     return validation
@@ -86,7 +109,7 @@ const generateRandomFormField = (): FormQuestion => {
         questionId: generateId(),
         type,
         question,
-        validations: hasValidations ? [generateRandomValidation(type)] : [],
+        validations: hasValidations ? generateRandomValidations(type) : [],
     }
 
     return formField

@@ -10,7 +10,6 @@ import {
 import { useId } from '@fluentui/react-components'
 import { Add48Regular } from '@fluentui/react-icons'
 import { QuestionTypeSelector } from './QuiestionTypeSelector'
-import { CreateValidationsForField } from './CreateValidationsForField'
 import { useNewQuestionContext } from '../../contexts/NewQuestionContext'
 const useStyles = makeStyles({
     container: {
@@ -51,9 +50,6 @@ export const QuestionBuilder: React.FunctionComponent = () => {
                     value={question.question}
                     onChange={(e) => setQuestion(e.target.value)}
                 />
-            </div>
-            <div className={styles.item}>
-                <CreateValidationsForField type={question.type} />
             </div>
             <div className={styles.item}>
                 <Button

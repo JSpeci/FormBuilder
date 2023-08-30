@@ -21,12 +21,21 @@ export type FormModel = {
     formQuestions: FormQuestion[]
 }
 
-export const mapInputTypeToValidationTypes = (type: InputType) => {
+export const inputTypesPossibleValidationTypes = (type: InputType) => {
     switch (type) {
         case InputType.Numeric:
-            return [ValidationType.GreaterThan, ValidationType.LessThan]
+            return [
+                ValidationType.GreaterThan,
+                ValidationType.LessThan,
+                ValidationType.IsMandatory,
+            ]
         case InputType.Text:
-            return [ValidationType.ContainsText, ValidationType.StartsWithText]
+            return [
+                ValidationType.ContainsText,
+                ValidationType.StartsWithText,
+                ValidationType.IsMandatory,
+            ]
+        case InputType.YesNo:
+            return [ValidationType.IsMandatory]
     }
-    return []
 }

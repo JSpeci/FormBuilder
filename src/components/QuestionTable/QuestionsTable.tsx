@@ -14,9 +14,10 @@ import {
 } from '@fluentui/react-components'
 
 import { Delete28Regular } from '@fluentui/react-icons'
-import { ValidationRule } from '../validations/validations'
-import { FormQuestion } from '../model/form'
-import { useFormContext } from '../contexts/FormContext'
+import { ValidationRule } from '../../validations/validations'
+import { FormQuestion } from '../../model/form'
+import { useFormContext } from '../../contexts/FormContext'
+import { QuestionValidationsCell } from './QuestionValidationsCell'
 
 type TypeCell = {
     label: string
@@ -68,7 +69,9 @@ const columns: TableColumnDefinition<FormQuestion>[] = [
             return 'Validations'
         },
         renderCell: (item) => {
-            return item.validations?.length
+            return (
+                <QuestionValidationsCell validations={item.validations || []} />
+            )
         },
     }),
     createTableColumn<FormQuestion>({

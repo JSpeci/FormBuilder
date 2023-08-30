@@ -1,6 +1,6 @@
 import React from 'react'
 import { Subtitle1, makeStyles, shorthands } from '@fluentui/react-components'
-import { FormQuestion } from '../model/form'
+import { FormQuestion } from '../../model/form'
 import { QuestionsTable } from './QuestionsTable'
 
 const useStyles = makeStyles({

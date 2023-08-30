@@ -6,7 +6,7 @@ import {
     shorthands,
 } from '@fluentui/react-components'
 import { QuestionBuilder } from './QuestionBuilder/QuestionBuilder'
-import { FormQuestions } from './FormQuestions'
+import { FormQuestions } from './QuestionTable/FormQuestions'
 import { useFormContext } from '../contexts/FormContext'
 import { FormGeneralInfo } from './FormGeneralInfo'
 import { NewQuestionContextProvider } from '../contexts/NewQuestionContext'
