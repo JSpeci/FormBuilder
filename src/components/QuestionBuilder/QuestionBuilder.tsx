@@ -37,7 +37,7 @@ export const QuestionBuilder: React.FunctionComponent = () => {
     return (
         <div className={styles.container}>
             <div className={styles.item}>
-                <Subtitle1>Add new field to form</Subtitle1>
+                <Subtitle1>Add new question to form</Subtitle1>
             </div>
             <div className={styles.item}>
                 <QuestionTypeSelector onChange={(v) => setType(v[0])} />

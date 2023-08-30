@@ -10,7 +10,9 @@ import {
     MenuTrigger,
     Button,
 } from '@fluentui/react-components'
-import { ValidationRule } from '../../validations/validations'
+import { ValidationRule, ValidationType } from '../../validations/validations'
+import { Add16Regular } from '@fluentui/react-icons'
+import { useFormContext } from '../../contexts/FormContext'
 const useStyles = makeStyles({
     container: {
         display: 'flex',
@@ -31,11 +33,14 @@ export const QuestionValidationsCell: React.FunctionComponent<
     QuestionValidationsCellProps
 > = (props) => {
     const styles = useStyles()
+    const { deleteValidationFromSelectedForm } = useFormContext()
 
     return (
         <div className={styles.container}>
             <div className={styles.validationRectangle}>
-                <Button>+</Button>
+                <Button>
+                    <Add16Regular />
+                </Button>
             </div>
             {props.validations.map((validation, index) => (
                 <div key={index} className={styles.validationRectangle}>
@@ -46,8 +51,19 @@ export const QuestionValidationsCell: React.FunctionComponent<
 
                         <MenuPopover>
                             <MenuList>
-                                <MenuItem>Remove</MenuItem>
-                                <MenuItem>Edit</MenuItem>
+                                {validation.type !==
+                                    ValidationType.IsMandatory && (
+                                    <MenuItem>Edit</MenuItem>
+                                )}
+                                <MenuItem
+                                    onClick={() =>
+                                        deleteValidationFromSelectedForm(
+                                            validation.validationId
+                                        )
+                                    }
+                                >
+                                    Remove
+                                </MenuItem>
                             </MenuList>
                         </MenuPopover>
                     </Menu>

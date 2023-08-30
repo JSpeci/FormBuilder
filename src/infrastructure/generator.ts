@@ -67,6 +67,7 @@ const generateValidationByType = (
     validationType: ValidationType
 ): ValidationRule => {
     const validation: ValidationRule = {
+        validationId: generateId(),
         type: validationType,
         message: `Answer ${validationType}`,
     }

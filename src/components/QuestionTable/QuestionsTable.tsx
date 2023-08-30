@@ -112,15 +112,15 @@ const columnSizingOptions: TableColumnSizingOptions = {
         minWidth: 80,
         idealWidth: 80,
     },
-    // validations: {
-    //     defaultWidth: 700,
-    //     minWidth: 600,
-    //     idealWidth: 700,
-    // },
     question: {
         defaultWidth: 300,
         minWidth: 200,
         idealWidth: 250,
+    },
+    validations: {
+        defaultWidth: 700,
+        minWidth: 600,
+        idealWidth: 750,
     },
 }
 

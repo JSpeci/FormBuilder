@@ -1,9 +1,10 @@
 import React, { createContext, useContext, useState } from 'react'
-import { FormModel } from '../model/form'
+import { FormModel, FormQuestion } from '../model/form'
 import { useLocalStorage } from '../hooks/useLocalStorage'
 import { LOCAL_STORAGE_KEY } from '../constants'
 import { generateId } from '../infrastructure/generateId'
 import { generateSomeRandomForms } from '../infrastructure/generator'
+import { ValidationRule } from '../validations/validations'
 
 export type FormsContextType = {
     forms: FormModel[]
@@ -16,6 +17,7 @@ export type FormsContextType = {
     deleteForm: (id: number) => void
     updateExistingForm: (id: number, updated: FormModel) => void
     deleteQuestionFromSelectedForm: (questionId: number) => void
+    deleteValidationFromSelectedForm: (validationId: number) => void
 }
 
 export const FormContext = createContext<FormsContextType | null>(null)
@@ -79,6 +81,42 @@ export const FormProvider: React.FC<FormProviderProps> = (
         }
     }
 
+    const deleteValidationFromSelectedForm = (validationId: number) => {
+        // Yeah, this is ugly. I rely on, that the data will not be large and deep
+        // solution is to flatten the data structure maybe
+        const affectedQuestion = selectedFormForEditing?.formQuestions.find(
+            (q: FormQuestion) =>
+                q.validations?.some((v) => v.validationId === validationId)
+        )
+
+        const newValidations: ValidationRule[] =
+            affectedQuestion?.validations?.filter(
+                (v) => v.validationId !== validationId
+            ) || []
+
+        const newQuestions = selectedFormForEditing?.formQuestions.filter(
+            (q) => q.questionId !== affectedQuestion?.questionId
+        )
+        if (affectedQuestion) {
+            newQuestions?.push({
+                ...affectedQuestion,
+                validations: newValidations,
+            })
+        }
+
+        if (selectedFormForEditing) {
+            const updated = {
+                ...selectedFormForEditing,
+            }
+            updated.formQuestions = newQuestions || []
+            updateExistingForm(selectedFormForEditing?.id, updated)
+            setSelectedFormForEditing({
+                ...selectedFormForEditing,
+                formQuestions: newQuestions || [],
+            })
+        }
+    }
+
     const setFormForTesting = (id: number | undefined) => {
         const found = (forms as FormModel[]).find((f: FormModel) => f.id === id)
         found && setSelectedFormForTesting(found)
@@ -106,6 +144,7 @@ export const FormProvider: React.FC<FormProviderProps> = (
         deleteForm,
         updateExistingForm,
         deleteQuestionFromSelectedForm,
+        deleteValidationFromSelectedForm,
     }
 
     return (

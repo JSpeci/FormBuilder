@@ -97,6 +97,7 @@ export const ValidationWithValueAddRow: React.FC<ValidationAddRowProps> = (
     const shouldFireChange = () => {
         if (isValid()) {
             props.onValidationChange({
+                validationId: 0,
                 message: message || `${props.type} ${value}`,
                 type: props.type,
                 numericValue:

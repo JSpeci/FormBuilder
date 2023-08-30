@@ -7,6 +7,7 @@ export enum ValidationType {
 }
 
 export interface ValidationRule {
+    validationId: number
     type: ValidationType
     message: string
     textValue?: string
