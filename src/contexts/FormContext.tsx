@@ -1,10 +1,14 @@
 import React, { createContext, useContext, useState } from 'react'
-import { FormModel, FormQuestion } from '../model/form'
+import {
+    FormModel,
+    FormQuestion,
+    isValidationOnlyOneInQuestion,
+} from '../model/form'
 import { useLocalStorage } from '../hooks/useLocalStorage'
 import { LOCAL_STORAGE_KEY } from '../constants'
 import { generateId } from '../infrastructure/generateId'
 import { generateSomeRandomForms } from '../infrastructure/generator'
-import { ValidationRule, ValidationType } from '../validations/validations'
+import { ValidationRule } from '../validations/validations'
 
 export type FormsContextType = {
     forms: FormModel[]
@@ -160,7 +164,6 @@ export const FormProvider: React.FC<FormProviderProps> = (
             setSelectedFormForEditing(updatedForm)
         }
     }
-
     const addValidationToSelectedForm = (
         questionId: number,
         newValidation: ValidationRule
@@ -169,27 +172,32 @@ export const FormProvider: React.FC<FormProviderProps> = (
             const updatedFormQuestions =
                 selectedFormForEditing.formQuestions.map((question) => {
                     if (question.questionId === questionId) {
-                        // Check if a 'IsMandatory' validation already exists
-                        const isMandatoryExists = question.validations?.some(
-                            (validation) =>
-                                validation.type === ValidationType.IsMandatory
-                        )
+                        const existingValidations = question.validations || []
+                        const isSingletonValidation =
+                            isValidationOnlyOneInQuestion(newValidation.type)
 
-                        // If 'IsMandatory' validation exists, don't add a new one
-                        if (
-                            newValidation.type === ValidationType.IsMandatory &&
-                            isMandatoryExists
-                        ) {
-                            return question
+                        // Check if a validation of the same type already exists
+                        const existingValidationIndex =
+                            existingValidations.findIndex(
+                                (validation) =>
+                                    validation.type === newValidation.type
+                            )
+
+                        if (isSingletonValidation) {
+                            if (existingValidationIndex !== -1) {
+                                // Replace existing validation with the new one
+                                existingValidations[existingValidationIndex] =
+                                    newValidation
+                            } else {
+                                existingValidations.push(newValidation)
+                            }
+                        } else {
+                            existingValidations.push(newValidation)
                         }
 
-                        const updatedValidations = [
-                            ...(question.validations || []),
-                            newValidation,
-                        ]
                         return {
                             ...question,
-                            validations: updatedValidations,
+                            validations: existingValidations,
                         }
                     }
                     return question

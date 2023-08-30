@@ -10,10 +10,15 @@ import {
     makeStyles,
     Input,
     shorthands,
-    Subtitle1,
+    Label,
+    useId,
+    Subtitle2,
 } from '@fluentui/react-components'
 import { ValidationRule, ValidationType } from '../../validations/validations'
-import { isValidationTypeNumeric } from '../../model/form'
+import {
+    isValidationOnlyOneInQuestion,
+    isValidationTypeNumeric,
+} from '../../model/form'
 import { useEffect, useState } from 'react'
 import { TypeSelectorDropdown } from '../TypeSelectorDropdown'
 
@@ -32,6 +37,8 @@ const useStyles = makeStyles({
         width: '90%',
     },
     item: {
+        display: 'flex',
+        flexDirection: 'column',
         marginBottom: '1rem',
         minWidth: '400px',
     },
@@ -42,12 +49,14 @@ interface ValidationDialogProps {
     onClose: () => void
     onConfirm: (updatedValidation: ValidationRule) => void
     validation: ValidationRule
+    isEditing?: boolean
 }
 
 export const ValidationDetailDialog: React.FC<ValidationDialogProps> = (
     props
 ) => {
     const styles = useStyles()
+    const labelId = useId('typeLabel')
     const [editedValidation, setEditedValidation] = useState<ValidationRule>(
         props.validation
     )
@@ -87,31 +96,67 @@ export const ValidationDetailDialog: React.FC<ValidationDialogProps> = (
     const handleConfirm = () => {
         props.onConfirm(editedValidation)
     }
+
+    const generateMessage = () => {
+        const message = `${editedValidation.type} ${
+            isValidationTypeNumeric(editedValidation.type)
+                ? editedValidation.numericValue
+                : editedValidation.textValue
+        }`
+
+        setEditedValidation({
+            ...editedValidation,
+            message,
+        })
+    }
     return (
         <Dialog open={props.visible}>
             <DialogSurface>
                 <DialogBody>
-                    <DialogTitle>{props.validation.message}</DialogTitle>
+                    <DialogTitle>
+                        {!props.isEditing ? 'Create new ' : 'Edit '} validation
+                    </DialogTitle>
                     <DialogContent>
                         <div className={styles.container}>
-                            <div className={styles.item}>
-                                <TypeSelectorDropdown
-                                    label="Validation type"
-                                    options={
-                                        Object.values(
-                                            ValidationType
-                                        ) as string[]
-                                    }
-                                    onChange={(v) =>
-                                        handleFieldChange('type', v[0])
-                                    }
-                                    value={editedValidation.type}
-                                />
-                            </div>
+                            {!props.isEditing && (
+                                <>
+                                    <div className={styles.item}>
+                                        <TypeSelectorDropdown
+                                            label="Validation type"
+                                            options={
+                                                Object.values(
+                                                    ValidationType
+                                                ) as string[]
+                                            }
+                                            onChange={(v) =>
+                                                handleFieldChange('type', v[0])
+                                            }
+                                            value={editedValidation.type}
+                                        />
+                                    </div>
+                                    {isValidationOnlyOneInQuestion(
+                                        editedValidation.type
+                                    ) && (
+                                        <div className={styles.item}>
+                                            <Subtitle2>
+                                                This type of validation is
+                                                singleton on question, if the
+                                                same type exists on the
+                                                question, this validation will
+                                                replace it.
+                                            </Subtitle2>
+                                        </div>
+                                    )}
+                                </>
+                            )}
+
                             {editedValidation.type !==
                                 ValidationType.IsMandatory && (
                                 <>
                                     <div className={styles.item}>
+                                        <Label htmlFor={labelId}>
+                                            {editedValidation.type}
+                                        </Label>
                                         <Input
                                             className={styles.valueInput}
                                             size="medium"
@@ -143,6 +188,10 @@ export const ValidationDetailDialog: React.FC<ValidationDialogProps> = (
                                         />
                                     </div>
                                     <div className={styles.item}>
+                                        <Label htmlFor={labelId}>
+                                            Validation Message if answer is not
+                                            valid
+                                        </Label>
                                         <Input
                                             className={styles.valueInput}
                                             size="medium"
@@ -158,9 +207,9 @@ export const ValidationDetailDialog: React.FC<ValidationDialogProps> = (
                                         />
                                     </div>
                                     <div className={styles.item}>
-                                        <Subtitle1>
+                                        <Subtitle2>
                                             {validationMessage}
-                                        </Subtitle1>
+                                        </Subtitle2>
                                     </div>
                                 </>
                             )}
@@ -169,6 +218,12 @@ export const ValidationDetailDialog: React.FC<ValidationDialogProps> = (
                     <DialogActions>
                         <Button appearance="secondary" onClick={props.onClose}>
                             Cancel
+                        </Button>
+                        <Button
+                            appearance="secondary"
+                            onClick={generateMessage}
+                        >
+                            Generate message
                         </Button>
                         <Button
                             disabled={!isInputValid}

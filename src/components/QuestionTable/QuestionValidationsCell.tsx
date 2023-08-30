@@ -124,6 +124,7 @@ export const QuestionValidationsCell: React.FunctionComponent<
                     onClose={() => setIsEditDialogOpen(false)}
                     onConfirm={handleEditDialogConfirm}
                     validation={validation}
+                    isEditing={!isNewValidation}
                 />
             )}
         </div>

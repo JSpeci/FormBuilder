@@ -50,3 +50,16 @@ export const isValidationTypeNumeric = (
 
     return numericValidationTypes.includes(validationType)
 }
+
+export const isValidationOnlyOneInQuestion = (
+    validationType: ValidationType
+): boolean => {
+    const singletonValidationsOnQuestion = [
+        ValidationType.GreaterThan,
+        ValidationType.LessThan,
+        ValidationType.IsMandatory,
+        ValidationType.StartsWithText,
+    ]
+
+    return singletonValidationsOnQuestion.includes(validationType)
+}
