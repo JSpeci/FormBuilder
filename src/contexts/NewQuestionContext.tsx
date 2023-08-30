@@ -52,20 +52,6 @@ export const NewQuestionContextProvider: React.FC<
         setFormField({ ...formField, type: convertStringToInputType(t) })
     }
 
-    // const addOrChangeValidationRule = (vr: ValidationRule) => {
-    //     // resolve uniqueness of validation type
-    //     const updatedValidations = formField.validations
-    //         ? formField.validations.filter(
-    //               (existingRule) => existingRule.type !== vr.type
-    //           )
-    //         : []
-
-    //     // Add the new validation rule to the updatedValidations array
-    //     const newValidations = [...updatedValidations, vr]
-
-    //     setFormField({ ...formField, validations: newValidations })
-    // }
-
     const addQuestionToForm = () => {
         if (selectedFormForEditing) {
             const updated = { ...selectedFormForEditing }

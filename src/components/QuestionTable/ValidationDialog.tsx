@@ -13,12 +13,13 @@ import {
 } from '@fluentui/react-components'
 import { ValidationRule } from '../../validations/validations'
 import { isValidationTypeNumeric } from '../../model/form'
+import { useEffect, useState } from 'react'
 
 interface ValidationDialogProps {
     visible: boolean
     onClose: () => void
     onConfirm: (updatedValidation: ValidationRule) => void
-    validation: ValidationRule // The validation to be edited
+    validation: ValidationRule
 }
 
 const useStyles = makeStyles({
@@ -34,19 +35,30 @@ const useStyles = makeStyles({
 export const ValidationDialog: React.FC<ValidationDialogProps> = (props) => {
     const styles = useStyles()
     const [editedValidation, setEditedValidation] =
-        React.useState<ValidationRule>(
-            props.validation // Initialize with the current validation data
-        )
+        React.useState<ValidationRule>(props.validation)
+    const [isInputValid, setIsInputValid] = useState(false)
+    useEffect(() => {
+        console.log(editedValidation.textValue === '')
+        const isValid =
+            editedValidation.message.trim() !== '' &&
+            ((!isValidationTypeNumeric(editedValidation.type) &&
+                editedValidation.textValue?.trim() !== '') ||
+                (isValidationTypeNumeric(editedValidation.type) &&
+                    editedValidation.numericValue !== undefined))
+        setIsInputValid(isValid)
+    }, [editedValidation])
 
     const handleFieldChange = (field: keyof ValidationRule, value: any) => {
+        // Fix of strange behaviour of Fluent UI numeric input
+        if (field === 'numericValue' && value === '') {
+            value = undefined
+        }
         setEditedValidation({
             ...editedValidation,
             [field]: value,
         })
     }
-
     const handleConfirm = () => {
-        // Call the onConfirm callback with the updated validation
         props.onConfirm(editedValidation)
     }
     return (
@@ -58,6 +70,11 @@ export const ValidationDialog: React.FC<ValidationDialogProps> = (props) => {
                         <Input
                             className={styles.valueInput}
                             size="medium"
+                            value={String(
+                                isValidationTypeNumeric(editedValidation.type)
+                                    ? editedValidation.numericValue
+                                    : editedValidation.textValue
+                            )}
                             type={
                                 isValidationTypeNumeric(editedValidation.type)
                                     ? 'number'
@@ -79,6 +96,7 @@ export const ValidationDialog: React.FC<ValidationDialogProps> = (props) => {
                             className={styles.valueInput}
                             size="medium"
                             type="text"
+                            value={editedValidation.message}
                             placeholder="Validation message"
                             onChange={(e) => {
                                 handleFieldChange('message', e.target.value)
@@ -90,6 +108,7 @@ export const ValidationDialog: React.FC<ValidationDialogProps> = (props) => {
                             Cancel
                         </Button>
                         <Button
+                            disabled={!isInputValid}
                             className={styles.confirmDialogButton}
                             appearance="primary"
                             onClick={handleConfirm}

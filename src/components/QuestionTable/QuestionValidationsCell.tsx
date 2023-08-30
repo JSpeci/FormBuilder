@@ -29,6 +29,7 @@ const useStyles = makeStyles({
 })
 
 interface QuestionValidationsCellProps {
+    questionId: number
     validations: ValidationRule[]
 }
 
@@ -45,12 +46,10 @@ export const QuestionValidationsCell: React.FunctionComponent<
         startEditingValidation(validation, false)
         setIsEditDialogOpen(true)
     }
+    const { editValidationInSelectedForm } = useFormContext()
 
     const handleEditDialogConfirm = (updatedValidation: ValidationRule) => {
-        // Apply the changes to your data or context state
-        // Close the edit dialog
-        console.log(updatedValidation)
-
+        editValidationInSelectedForm(props.questionId, updatedValidation)
         setIsEditDialogOpen(false)
     }
 

@@ -71,7 +71,10 @@ const columns: TableColumnDefinition<FormQuestion>[] = [
         },
         renderCell: (item) => {
             return (
-                <QuestionValidationsCell validations={item.validations || []} />
+                <QuestionValidationsCell
+                    questionId={item.questionId}
+                    validations={item.validations || []}
+                />
             )
         },
     }),

@@ -18,6 +18,10 @@ export type FormsContextType = {
     updateExistingForm: (id: number, updated: FormModel) => void
     deleteQuestionFromSelectedForm: (questionId: number) => void
     deleteValidationFromSelectedForm: (validationId: number) => void
+    editValidationInSelectedForm: (
+        questionId: number,
+        updatedValidation: ValidationRule
+    ) => void
 }
 
 export const FormContext = createContext<FormsContextType | null>(null)
@@ -117,6 +121,43 @@ export const FormProvider: React.FC<FormProviderProps> = (
         }
     }
 
+    const editValidationInSelectedForm = (
+        questionId: number,
+        updatedValidation: ValidationRule
+    ) => {
+        if (selectedFormForEditing) {
+            const updatedFormQuestions =
+                selectedFormForEditing.formQuestions.map((question) => {
+                    if (question.questionId === questionId) {
+                        const updatedValidations = question.validations?.map(
+                            (validation) => {
+                                if (
+                                    validation.validationId ===
+                                    updatedValidation.validationId
+                                ) {
+                                    return updatedValidation
+                                }
+                                return validation
+                            }
+                        )
+                        return {
+                            ...question,
+                            validations: updatedValidations || [],
+                        }
+                    }
+                    return question
+                })
+
+            const updatedForm: FormModel = {
+                ...selectedFormForEditing,
+                formQuestions: updatedFormQuestions,
+            }
+
+            updateExistingForm(selectedFormForEditing.id, updatedForm)
+            setSelectedFormForEditing(updatedForm)
+        }
+    }
+
     const setFormForTesting = (id: number | undefined) => {
         const found = (forms as FormModel[]).find((f: FormModel) => f.id === id)
         found && setSelectedFormForTesting(found)
@@ -145,6 +186,7 @@ export const FormProvider: React.FC<FormProviderProps> = (
         updateExistingForm,
         deleteQuestionFromSelectedForm,
         deleteValidationFromSelectedForm,
+        editValidationInSelectedForm,
     }
 
     return (
