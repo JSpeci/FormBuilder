@@ -22,6 +22,10 @@ export type FormsContextType = {
         questionId: number,
         updatedValidation: ValidationRule
     ) => void
+    addValidationToSelectedForm: (
+        questionId: number,
+        updatedValidation: ValidationRule
+    ) => void
 }
 
 export const FormContext = createContext<FormsContextType | null>(null)
@@ -42,7 +46,6 @@ export const FormProvider: React.FC<FormProviderProps> = (
     >()
 
     const createNewForm = () => {
-        // Updates local storage when a new form is created
         const id = generateId()
         const newForm: FormModel = {
             id,
@@ -158,6 +161,36 @@ export const FormProvider: React.FC<FormProviderProps> = (
         }
     }
 
+    const addValidationToSelectedForm = (
+        questionId: number,
+        newValidation: ValidationRule
+    ) => {
+        if (selectedFormForEditing) {
+            const updatedFormQuestions =
+                selectedFormForEditing.formQuestions.map((question) => {
+                    if (question.questionId === questionId) {
+                        const updatedValidations = [
+                            ...(question.validations || []),
+                            newValidation,
+                        ]
+                        return {
+                            ...question,
+                            validations: updatedValidations,
+                        }
+                    }
+                    return question
+                })
+
+            const updatedForm: FormModel = {
+                ...selectedFormForEditing,
+                formQuestions: updatedFormQuestions,
+            }
+
+            updateExistingForm(selectedFormForEditing.id, updatedForm)
+            setSelectedFormForEditing(updatedForm)
+        }
+    }
+
     const setFormForTesting = (id: number | undefined) => {
         const found = (forms as FormModel[]).find((f: FormModel) => f.id === id)
         found && setSelectedFormForTesting(found)
@@ -187,6 +220,7 @@ export const FormProvider: React.FC<FormProviderProps> = (
         deleteQuestionFromSelectedForm,
         deleteValidationFromSelectedForm,
         editValidationInSelectedForm,
+        addValidationToSelectedForm,
     }
 
     return (

@@ -56,7 +56,7 @@ const generateRandomValidations = (fieldType: InputType): ValidationRule[] => {
                 1
             )
         } else {
-            break // No more validation types available
+            break
         }
     }
 

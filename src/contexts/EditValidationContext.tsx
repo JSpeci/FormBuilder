@@ -22,7 +22,7 @@ export const EditValidationContextProvider: React.FC<
     EditValidationContextProviderProps
 > = (props: EditValidationContextProviderProps) => {
     const [validation, setValidation] = useState<ValidationRule | null>(null)
-    const [isNewValidation, setIsNewValidation] = useState<boolean>(true)
+    const [isNewValidation, setIsNewValidation] = useState<boolean>(false)
 
     const startEditingValidation = (
         validation: ValidationRule | null,
@@ -34,7 +34,7 @@ export const EditValidationContextProvider: React.FC<
 
     const stopEditingValidation = () => {
         setValidation(null)
-        setIsNewValidation(true)
+        setIsNewValidation(false)
     }
 
     const contextValue: EditValidationContextType = {

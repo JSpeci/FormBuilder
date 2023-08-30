@@ -6,7 +6,6 @@ import {
     useId,
     Option,
 } from '@fluentui/react-components'
-import { InputType } from '../../model/form'
 
 const dropDownStyles = makeStyles({
     root: {
@@ -17,28 +16,29 @@ const dropDownStyles = makeStyles({
     },
 })
 
-interface QuestionTypeSelectorProps {
+interface TypeSelectorDropdownProps {
     onChange: (v: any) => void
+    options: string[]
+    label: string
+    value: string
 }
 
-export const QuestionTypeSelector: React.FC<QuestionTypeSelectorProps> = (
+export const TypeSelectorDropdown: React.FC<TypeSelectorDropdownProps> = (
     props
 ) => {
-    const questionType = useId('questionType')
-    const options: string[] = Object.values(InputType) as string[]
+    const labelId = useId('dropdownLabel')
     const styles = dropDownStyles()
     return (
         <div className={styles.root}>
-            <Label htmlFor={questionType}>Question type</Label>
+            <Label htmlFor={labelId}>{props.label}</Label>
             <Dropdown
-                aria-labelledby={questionType}
-                placeholder="Select a question type"
-                defaultValue={options[0]}
+                aria-labelledby={labelId}
+                value={props.value}
                 onOptionSelect={(ev: any, data: any) => {
                     props.onChange(data.selectedOptions)
                 }}
             >
-                {options.map((option) => (
+                {props.options.map((option) => (
                     <Option key={option} value={option}>
                         {option}
                     </Option>

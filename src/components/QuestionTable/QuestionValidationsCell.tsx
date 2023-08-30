@@ -15,12 +15,14 @@ import { Add16Regular } from '@fluentui/react-icons'
 import { useFormContext } from '../../contexts/FormContext'
 import { useState } from 'react'
 import { useEditValidationContext } from '../../contexts/EditValidationContext'
-import { ValidationDialog } from './ValidationDialog'
+import { ValidationDetailDialog } from './ValidationDetailDialog'
+import { generateId } from '../../infrastructure/generateId'
 const useStyles = makeStyles({
     container: {
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'flex-start',
+        flexWrap: 'wrap',
         width: '100%',
     },
     validationRectangle: {
@@ -39,24 +41,47 @@ export const QuestionValidationsCell: React.FunctionComponent<
     const styles = useStyles()
     const { deleteValidationFromSelectedForm } = useFormContext()
 
-    const { validation, startEditingValidation } = useEditValidationContext()
+    const {
+        validation,
+        startEditingValidation,
+        isNewValidation,
+        stopEditingValidation,
+    } = useEditValidationContext()
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
 
     const handleEditClick = (validation: ValidationRule) => {
         startEditingValidation(validation, false)
         setIsEditDialogOpen(true)
     }
-    const { editValidationInSelectedForm } = useFormContext()
+    const { editValidationInSelectedForm, addValidationToSelectedForm } =
+        useFormContext()
 
-    const handleEditDialogConfirm = (updatedValidation: ValidationRule) => {
-        editValidationInSelectedForm(props.questionId, updatedValidation)
+    const handleEditDialogConfirm = (validation: ValidationRule) => {
+        if (isNewValidation) {
+            addValidationToSelectedForm(props.questionId, validation)
+        } else {
+            editValidationInSelectedForm(props.questionId, validation)
+        }
         setIsEditDialogOpen(false)
+        stopEditingValidation()
+    }
+
+    const handleCreateNewValidation = () => {
+        const newValidation: ValidationRule = {
+            type: ValidationType.ContainsText,
+            message: '',
+            validationId: generateId(),
+            numericValue: undefined,
+            textValue: '',
+        }
+        startEditingValidation(newValidation, true)
+        setIsEditDialogOpen(true)
     }
 
     return (
         <div className={styles.container}>
             <div className={styles.validationRectangle}>
-                <Button>
+                <Button onClick={handleCreateNewValidation}>
                     <Add16Regular />
                 </Button>
             </div>
@@ -94,7 +119,7 @@ export const QuestionValidationsCell: React.FunctionComponent<
                 </div>
             ))}
             {isEditDialogOpen && validation && (
-                <ValidationDialog
+                <ValidationDetailDialog
                     visible={isEditDialogOpen}
                     onClose={() => setIsEditDialogOpen(false)}
                     onConfirm={handleEditDialogConfirm}

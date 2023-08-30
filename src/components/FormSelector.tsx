@@ -8,8 +8,8 @@ const useStyles = makeStyles({
         marginBottom: '0.5rem',
         cursor: 'pointer',
         width: '100%',
-        justifyContent: 'flex-start', // Align content to the left
-        textAlign: 'left', // Align text to the left
+        justifyContent: 'flex-start',
+        textAlign: 'left',
     },
 })
 

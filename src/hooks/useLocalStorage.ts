@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 
-// Custom hook for managing local storage
 export const useLocalStorage = (key: string, initialValue: any) => {
     const storedValue = localStorage.getItem(key)
     const initial = storedValue ? JSON.parse(storedValue) : initialValue

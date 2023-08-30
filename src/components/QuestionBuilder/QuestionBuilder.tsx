@@ -9,9 +9,10 @@ import {
 } from '@fluentui/react-components'
 import { useId } from '@fluentui/react-components'
 import { Add48Regular } from '@fluentui/react-icons'
-import { QuestionTypeSelector } from './QuiestionTypeSelector'
+import { TypeSelectorDropdown } from '../TypeSelectorDropdown'
 import { useNewQuestionContext } from '../../contexts/NewQuestionContext'
 import { useState } from 'react'
+import { InputType } from '../../model/form'
 const useStyles = makeStyles({
     container: {
         ...shorthands.padding('1rem'),
@@ -38,11 +39,12 @@ export const QuestionBuilder: React.FunctionComponent = () => {
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value
         setQuestion(value)
-        setIsInputValid(value.trim() !== '') // Set validation based on non-empty input
+        setIsInputValid(value.trim() !== '')
     }
     const submitClicked = () => {
         setIsInputValid(false)
         addQuestionToForm()
+        setType(question.type)
     }
 
     return (
@@ -51,7 +53,12 @@ export const QuestionBuilder: React.FunctionComponent = () => {
                 <Subtitle1>Add new question to form</Subtitle1>
             </div>
             <div className={styles.item}>
-                <QuestionTypeSelector onChange={(v) => setType(v[0])} />
+                <TypeSelectorDropdown
+                    label="Question type"
+                    options={Object.values(InputType) as string[]}
+                    onChange={(v) => setType(v[0])}
+                    value={question.type}
+                />
             </div>
             <div className={styles.item}>
                 <Label htmlFor={questionInput}>Question</Label>
@@ -67,7 +74,7 @@ export const QuestionBuilder: React.FunctionComponent = () => {
                     icon={<Add48Regular />}
                     iconPosition="before"
                     onClick={submitClicked}
-                    disabled={!isInputValid} // Disable button if input is not valid
+                    disabled={!isInputValid}
                 >
                     Add field to form
                 </Button>

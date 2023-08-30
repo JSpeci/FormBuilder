@@ -9,8 +9,8 @@ const useStyles = makeStyles({
         width: '100%',
         ...shorthands.padding('1rem'),
         backgroundColor: '#ffffff',
-        display: 'flex', // Set display to flex
-        flexDirection: 'column', // Set flex direction to column
+        display: 'flex',
+        flexDirection: 'column',
     },
     item: {
         marginBottom: '1rem',
