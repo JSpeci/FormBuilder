@@ -25,8 +25,6 @@ export const FormQuestions: React.FunctionComponent<FormToolProps> = (
     props: FormToolProps
 ) => {
     const styles = useStyles()
-
-    console.log('FormQuestions', props.formQuestions)
     return (
         <div className={styles.mainPanel}>
             <div className={styles.item}>

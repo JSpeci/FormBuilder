@@ -72,6 +72,10 @@ export const FormProvider: React.FC<FormProviderProps> = (
             const updated = { ...selectedFormForEditing }
             updated.formQuestions = newQuestions
             updateExistingForm(selectedFormForEditing?.id, updated)
+            setSelectedFormForEditing({
+                ...selectedFormForEditing,
+                formQuestions: newQuestions,
+            })
         }
     }
 
