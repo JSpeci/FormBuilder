@@ -3,6 +3,7 @@ import {
     InputType,
     FormModel,
     inputTypesPossibleValidationTypes,
+    isValidationOnlyOneInQuestion,
 } from '../model/form'
 import { ValidationRule, ValidationType } from '../validations/validations'
 import { generateId } from './generateId'
@@ -50,7 +51,24 @@ const generateRandomValidations = (fieldType: InputType): ValidationRule[] => {
         )
         if (randomValidationType) {
             const validation = generateValidationByType(randomValidationType)
-            validations.push(validation)
+
+            // Check if the validation type should be treated as a singleton
+            if (isValidationOnlyOneInQuestion(validation.type)) {
+                const existingValidationIndex = validations.findIndex(
+                    (existingValidation) =>
+                        existingValidation.type === validation.type
+                )
+
+                if (existingValidationIndex !== -1) {
+                    // Replace existing validation with the new one
+                    validations[existingValidationIndex] = validation
+                } else {
+                    validations.push(validation)
+                }
+            } else {
+                validations.push(validation)
+            }
+
             additionalValidationTypes.splice(
                 additionalValidationTypes.indexOf(randomValidationType),
                 1
