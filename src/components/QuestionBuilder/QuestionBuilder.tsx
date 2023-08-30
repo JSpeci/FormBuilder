@@ -11,6 +11,7 @@ import { useId } from '@fluentui/react-components'
 import { Add48Regular } from '@fluentui/react-icons'
 import { QuestionTypeSelector } from './QuiestionTypeSelector'
 import { useNewQuestionContext } from '../../contexts/NewQuestionContext'
+import { useState } from 'react'
 const useStyles = makeStyles({
     container: {
         ...shorthands.padding('1rem'),
@@ -33,6 +34,16 @@ export const QuestionBuilder: React.FunctionComponent = () => {
     const questionInput = useId('questionInput')
     const { setType, question, setQuestion, addQuestionToForm } =
         useNewQuestionContext()
+    const [isInputValid, setIsInputValid] = useState(false)
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value
+        setQuestion(value)
+        setIsInputValid(value.trim() !== '') // Set validation based on non-empty input
+    }
+    const submitClicked = () => {
+        setIsInputValid(false)
+        addQuestionToForm()
+    }
 
     return (
         <div className={styles.container}>
@@ -48,14 +59,15 @@ export const QuestionBuilder: React.FunctionComponent = () => {
                     id={questionInput}
                     size="medium"
                     value={question.question}
-                    onChange={(e) => setQuestion(e.target.value)}
+                    onChange={handleInputChange}
                 />
             </div>
             <div className={styles.item}>
                 <Button
                     icon={<Add48Regular />}
                     iconPosition="before"
-                    onClick={addQuestionToForm}
+                    onClick={submitClicked}
+                    disabled={!isInputValid} // Disable button if input is not valid
                 >
                     Add field to form
                 </Button>

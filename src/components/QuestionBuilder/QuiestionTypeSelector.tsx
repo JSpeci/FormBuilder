@@ -33,6 +33,7 @@ export const QuestionTypeSelector: React.FC<QuestionTypeSelectorProps> = (
             <Dropdown
                 aria-labelledby={questionType}
                 placeholder="Select a question type"
+                defaultValue={options[0]}
                 onOptionSelect={(ev: any, data: any) => {
                     props.onChange(data.selectedOptions)
                 }}

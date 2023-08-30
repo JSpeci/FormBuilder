@@ -1,14 +1,11 @@
 import React, { createContext, useContext, useState } from 'react'
 import { FormQuestion, InputType } from '../model/form'
-import { ValidationRule } from '../validations/validations'
 import { useFormContext } from './FormContext'
 import { generateId } from '../infrastructure/generateId'
 
 export type NewQuestionContextType = {
     setQuestion: (n: string) => void
     setType: (t: InputType) => void
-    addOrChangeValidationRule: (r: ValidationRule) => void
-    setIsMandatory: (m: boolean) => void
     addQuestionToForm: () => void
     question: FormQuestion
 }
@@ -55,24 +52,19 @@ export const NewQuestionContextProvider: React.FC<
         setFormField({ ...formField, type: convertStringToInputType(t) })
     }
 
-    const addOrChangeValidationRule = (vr: ValidationRule) => {
-        // resolve uniqueness of validation type
-        const updatedValidations = formField.validations
-            ? formField.validations.filter(
-                  (existingRule) => existingRule.type !== vr.type
-              )
-            : []
+    // const addOrChangeValidationRule = (vr: ValidationRule) => {
+    //     // resolve uniqueness of validation type
+    //     const updatedValidations = formField.validations
+    //         ? formField.validations.filter(
+    //               (existingRule) => existingRule.type !== vr.type
+    //           )
+    //         : []
 
-        // Add the new validation rule to the updatedValidations array
-        const newValidations = [...updatedValidations, vr]
+    //     // Add the new validation rule to the updatedValidations array
+    //     const newValidations = [...updatedValidations, vr]
 
-        setFormField({ ...formField, validations: newValidations })
-    }
-
-    const setIsMandatory = (m: boolean) => {
-        // toggle is mandatory, or set it if undefined
-        m
-    }
+    //     setFormField({ ...formField, validations: newValidations })
+    // }
 
     const addQuestionToForm = () => {
         if (selectedFormForEditing) {
@@ -87,8 +79,6 @@ export const NewQuestionContextProvider: React.FC<
     const contextValue: NewQuestionContextType = {
         setQuestion,
         setType,
-        addOrChangeValidationRule,
-        setIsMandatory,
         addQuestionToForm,
         question: formField,
     }

@@ -8,7 +8,7 @@ import {
 } from '@fluentui/react-components'
 import { InputType, inputTypesPossibleValidationTypes } from '../../model/form'
 import { useState } from 'react'
-import { useNewQuestionContext } from '../../contexts/NewQuestionContext'
+// import { useNewQuestionContext } from '../../contexts/NewQuestionContext'
 import { ValidationRule, ValidationType } from '../../validations/validations'
 
 const validationSelectorTypes = makeStyles({
@@ -30,11 +30,11 @@ export const CreateValidationsForField: React.FC<
     const questionType = useId('questionType')
     const styles = validationSelectorTypes()
 
-    const { addOrChangeValidationRule } = useNewQuestionContext()
+    //const { addOrChangeValidationRule } = useNewQuestionContext()
 
     return (
         <>
-            <div className={styles.root}>
+            {/* <div className={styles.root}>
                 <Label htmlFor={questionType}>Question validations</Label>
                 {inputTypesPossibleValidationTypes(props.type).map(
                     (validationType) => (
@@ -43,13 +43,13 @@ export const CreateValidationsForField: React.FC<
                             type={validationType}
                             inputType={props.type}
                             onValidationChange={(v) =>
-                                addOrChangeValidationRule(v)
+                                //addOrChangeValidationRule(v)
                             }
                             key={validationType}
                         />
                     )
                 )}
-            </div>
+            </div> */}
         </>
     )
 }
