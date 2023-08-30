@@ -1,6 +1,6 @@
 import React from 'react'
 import { Subtitle1, makeStyles, shorthands } from '@fluentui/react-components'
-import { FormField } from '../model/form'
+import { FormQuestion } from '../model/form'
 import { QuestionsTable } from './QuestionsTable'
 
 const useStyles = makeStyles({
@@ -18,7 +18,7 @@ const useStyles = makeStyles({
 })
 
 export interface FormToolProps {
-    formFields: FormField[]
+    formQuestions: FormQuestion[]
 }
 
 export const FormQuestions: React.FunctionComponent<FormToolProps> = (
@@ -26,13 +26,14 @@ export const FormQuestions: React.FunctionComponent<FormToolProps> = (
 ) => {
     const styles = useStyles()
 
+    console.log('FormQuestions', props.formQuestions)
     return (
         <div className={styles.mainPanel}>
             <div className={styles.item}>
                 <Subtitle1>Questions in form</Subtitle1>
             </div>
             <div className={styles.item}>
-                <QuestionsTable items={props.formFields} />
+                <QuestionsTable items={props.formQuestions} />
             </div>
         </div>
     )

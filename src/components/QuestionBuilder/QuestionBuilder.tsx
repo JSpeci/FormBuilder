@@ -9,10 +9,9 @@ import {
 } from '@fluentui/react-components'
 import { useId } from '@fluentui/react-components'
 import { Add48Regular } from '@fluentui/react-icons'
-import { useState } from 'react'
 import { QuestionTypeSelector } from './QuiestionTypeSelector'
-import { CreateValidationForField } from './QuestionValidationsSelector'
-import { InputType } from '../../model/form'
+import { CreateValidationsForField } from './CreateValidationsForField'
+import { useNewQuestionContext } from '../../contexts/NewQuestionContext'
 const useStyles = makeStyles({
     container: {
         ...shorthands.padding('1rem'),
@@ -33,21 +32,8 @@ const useStyles = makeStyles({
 export const QuestionBuilder: React.FunctionComponent = () => {
     const styles = useStyles()
     const questionInput = useId('questionInput')
-    const [question, setQuestion] = useState('')
-    const [type, setType] = useState(InputType.Text)
-
-    // bad solution, but I was stuck and did not waste time
-    const convertStringToInputType = (s: string) => {
-        switch (s) {
-            case 'Yes or No':
-                return InputType.YesNo
-            case 'Text':
-                return InputType.Text
-            case 'Numeric':
-                return InputType.Numeric
-        }
-        return InputType.YesNo
-    }
+    const { setType, question, setQuestion, addQuestionToForm } =
+        useNewQuestionContext()
 
     return (
         <div className={styles.container}>
@@ -55,24 +41,26 @@ export const QuestionBuilder: React.FunctionComponent = () => {
                 <Subtitle1>Add new field to form</Subtitle1>
             </div>
             <div className={styles.item}>
-                <QuestionTypeSelector
-                    onChange={(v) => setType(convertStringToInputType(v[0]))}
-                />
+                <QuestionTypeSelector onChange={(v) => setType(v[0])} />
             </div>
             <div className={styles.item}>
                 <Label htmlFor={questionInput}>Question</Label>
                 <Input
                     id={questionInput}
                     size="medium"
-                    value={question}
+                    value={question.question}
                     onChange={(e) => setQuestion(e.target.value)}
                 />
             </div>
             <div className={styles.item}>
-                <CreateValidationForField type={type} />
+                <CreateValidationsForField type={question.type} />
             </div>
             <div className={styles.item}>
-                <Button icon={<Add48Regular />} iconPosition="before">
+                <Button
+                    icon={<Add48Regular />}
+                    iconPosition="before"
+                    onClick={addQuestionToForm}
+                >
                     Add field to form
                 </Button>
             </div>

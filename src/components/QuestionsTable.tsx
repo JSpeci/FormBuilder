@@ -12,9 +12,11 @@ import {
     createTableColumn,
     Button,
 } from '@fluentui/react-components'
+
 import { Delete28Regular } from '@fluentui/react-icons'
-import { FormField } from '../model/form'
 import { ValidationRule } from '../validations/validations'
+import { FormQuestion } from '../model/form'
+import { useFormContext } from '../contexts/FormContext'
 
 type TypeCell = {
     label: string
@@ -35,8 +37,8 @@ type Item = {
     validations: ValidationsCell
 }
 
-const columns: TableColumnDefinition<FormField>[] = [
-    createTableColumn<FormField>({
+const columns: TableColumnDefinition<FormQuestion>[] = [
+    createTableColumn<FormQuestion>({
         columnId: 'type',
         compare: (a, b) => {
             return a.type.localeCompare(b.type)
@@ -48,7 +50,7 @@ const columns: TableColumnDefinition<FormField>[] = [
             return <TableCellLayout>{item.type}</TableCellLayout>
         },
     }),
-    createTableColumn<FormField>({
+    createTableColumn<FormQuestion>({
         columnId: 'question',
         compare: (a, b) => {
             return a.question.localeCompare(b.question)
@@ -60,7 +62,7 @@ const columns: TableColumnDefinition<FormField>[] = [
             return <TableCellLayout>{item.question}</TableCellLayout>
         },
     }),
-    createTableColumn<FormField>({
+    createTableColumn<FormQuestion>({
         columnId: 'validations',
         renderHeaderCell: () => {
             return 'Validations'
@@ -69,17 +71,20 @@ const columns: TableColumnDefinition<FormField>[] = [
             return item.validations?.length
         },
     }),
-    createTableColumn<FormField>({
+    createTableColumn<FormQuestion>({
         columnId: 'action',
         renderHeaderCell: () => {
             return ''
         },
         renderCell: (item) => {
+            const { deleteQuestionFromSelectedForm } = useFormContext()
             return (
                 <TableCellLayout>
                     <Button
                         appearance="transparent"
-                        onClick={() => console.log(item)}
+                        onClick={() => {
+                            deleteQuestionFromSelectedForm(item.questionId)
+                        }}
                     >
                         <Delete28Regular />
                     </Button>
@@ -90,7 +95,7 @@ const columns: TableColumnDefinition<FormField>[] = [
 ]
 
 interface QuestionsTableProps {
-    items: FormField[]
+    items: FormQuestion[]
 }
 
 export const QuestionsTable: React.FC<QuestionsTableProps> = (props) => {

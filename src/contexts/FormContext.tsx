@@ -15,6 +15,7 @@ export type FormsContextType = {
     createNewForm: () => number
     deleteForm: (id: number) => void
     updateExistingForm: (id: number, updated: FormModel) => void
+    deleteQuestionFromSelectedForm: (questionId: number) => void
 }
 
 export const FormContext = createContext<FormsContextType | null>(null)
@@ -42,7 +43,7 @@ export const FormProvider: React.FC<FormProviderProps> = (
             name: 'New form',
             description: 'Empty form to be filled up',
             created: new Date(),
-            formFields: [],
+            formQuestions: [],
         }
         setForms([newForm, ...forms])
         return id
@@ -58,6 +59,20 @@ export const FormProvider: React.FC<FormProviderProps> = (
             obj.id === id ? updated : obj
         )
         setForms([...updatedArray])
+    }
+
+    const deleteQuestionFromSelectedForm = (questionId: number) => {
+        const affectedForm: FormModel = forms.find((form: FormModel) =>
+            form.formQuestions.some((q) => q.questionId === questionId)
+        )
+        const newQuestions = affectedForm.formQuestions.filter(
+            (q) => q.questionId !== questionId
+        )
+        if (selectedFormForEditing) {
+            const updated = { ...selectedFormForEditing }
+            updated.formQuestions = newQuestions
+            updateExistingForm(selectedFormForEditing?.id, updated)
+        }
     }
 
     const setFormForTesting = (id: number | undefined) => {
@@ -86,6 +101,7 @@ export const FormProvider: React.FC<FormProviderProps> = (
         createNewForm,
         deleteForm,
         updateExistingForm,
+        deleteQuestionFromSelectedForm,
     }
 
     return (

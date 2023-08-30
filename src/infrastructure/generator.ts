@@ -1,4 +1,4 @@
-import { FormField, InputType, FormModel } from '../model/form'
+import { FormQuestion, InputType, FormModel } from '../model/form'
 import { ValidationRule, ValidationType } from '../validations/validations'
 import { generateId } from './generateId'
 
@@ -65,7 +65,7 @@ const generateRandomValidation = (fieldType: InputType): ValidationRule => {
     return validation
 }
 
-const generateRandomFormField = (): FormField => {
+const generateRandomFormField = (): FormQuestion => {
     const type = getRandomEnumValue(InputType)
     let question = ''
     switch (type) {
@@ -82,7 +82,8 @@ const generateRandomFormField = (): FormField => {
 
     const hasValidations = Math.random() < 0.5
 
-    const formField: FormField = {
+    const formField: FormQuestion = {
+        questionId: generateId(),
         type,
         question,
         validations: hasValidations ? [generateRandomValidation(type)] : [],
@@ -93,7 +94,7 @@ const generateRandomFormField = (): FormField => {
 
 const generateRandomForm = (): FormModel => {
     const created = new Date()
-    const formFields: FormField[] = []
+    const formFields: FormQuestion[] = []
     const name = `Random form ${Math.floor(Math.random() * 100)}`
     const id = generateId()
     const description =
@@ -108,7 +109,7 @@ const generateRandomForm = (): FormModel => {
         name,
         description,
         created,
-        formFields,
+        formQuestions: formFields,
     }
 
     return form

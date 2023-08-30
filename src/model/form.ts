@@ -1,4 +1,4 @@
-import { ValidationRule } from '../validations/validations'
+import { ValidationRule, ValidationType } from '../validations/validations'
 
 export enum InputType {
     YesNo = 'Yes or No',
@@ -6,7 +6,8 @@ export enum InputType {
     Numeric = 'Numeric',
 }
 
-export type FormField = {
+export type FormQuestion = {
+    questionId: number
     type: InputType
     question: string
     validations?: ValidationRule[]
@@ -17,5 +18,15 @@ export type FormModel = {
     name: string
     description?: string
     created: Date
-    formFields: FormField[]
+    formQuestions: FormQuestion[]
+}
+
+export const mapInputTypeToValidationTypes = (type: InputType) => {
+    switch (type) {
+        case InputType.Numeric:
+            return [ValidationType.GreaterThan, ValidationType.LessThan]
+        case InputType.Text:
+            return [ValidationType.ContainsText, ValidationType.StartsWithText]
+    }
+    return []
 }

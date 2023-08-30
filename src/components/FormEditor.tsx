@@ -9,6 +9,7 @@ import { QuestionBuilder } from './QuestionBuilder/QuestionBuilder'
 import { FormQuestions } from './FormQuestions'
 import { useFormContext } from '../contexts/FormContext'
 import { FormGeneralInfo } from './FormGeneralInfo'
+import { NewQuestionContextProvider } from '../contexts/NewQuestionContext'
 
 const useStyles = makeStyles({
     mainPanel: {
@@ -33,6 +34,7 @@ export const FormEditor = () => {
         deleteForm,
         setFormForEditing,
     } = useFormContext()
+
     return (
         <div className={styles.mainPanel}>
             {selectedFormForEditing ? (
@@ -54,7 +56,9 @@ export const FormEditor = () => {
                                 setFormForEditing(-1)
                             }}
                         />
-                        <QuestionBuilder />
+                        <NewQuestionContextProvider>
+                            <QuestionBuilder />
+                        </NewQuestionContextProvider>
                     </div>
                     <div className={styles.item}>
                         <Divider appearance="strong" />
@@ -62,7 +66,9 @@ export const FormEditor = () => {
                     <div className={styles.item}>
                         {selectedFormForEditing && (
                             <FormQuestions
-                                formFields={selectedFormForEditing?.formFields}
+                                formQuestions={
+                                    selectedFormForEditing.formQuestions
+                                }
                             />
                         )}
                     </div>
