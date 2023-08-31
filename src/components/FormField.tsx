@@ -25,7 +25,7 @@ const FormField: React.FC<FormFieldProps> = ({
 
     const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const isChecked = event.target.checked
-        onValidationChange(index, isChecked)
+        onValidationChange(index, isChecked !== undefined)
 
         const switchMesage = question.validations?.find(
             (fq) => fq.type === ValidationType.IsMandatory

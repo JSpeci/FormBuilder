@@ -16,6 +16,9 @@ const useStyles = makeStyles({
         display: 'flex',
         flexDirection: 'column',
     },
+    formRow: {
+        marginBottom: '2rem',
+    },
     chooseSubtitle: {
         ...shorthands.padding('1rem'),
     },
@@ -64,22 +67,47 @@ export const TestingSandbox = () => {
         }
     }
 
+    const handleClear = () => {
+        setValidationStates(
+            selectedFormForTesting?.formQuestions.map(() => undefined) || []
+        )
+
+        // If you have controlled components (like Input fields) in FormField component,
+        // you need to clear their values as well
+        selectedFormForTesting?.formQuestions.forEach((fq, index) => {
+            handleFieldValidation(index, false) // Reset validation state to false
+        })
+    }
+
     return (
         <div className={styles.mainPanel}>
-            <Subtitle1>{selectedFormForTesting?.name}</Subtitle1>
+            <div className={styles.formRow}>
+                <Subtitle1>{selectedFormForTesting?.name}</Subtitle1>
+            </div>
+
             {selectedFormForTesting ? (
                 <>
                     {selectedFormForTesting.formQuestions.map((fq, index) => (
-                        <FormField
-                            key={index}
-                            question={fq}
-                            index={index}
-                            onValueChange={handleFieldValidation}
-                        />
+                        <div className={styles.formRow}>
+                            <FormField
+                                key={index}
+                                question={fq}
+                                index={index}
+                                onValueChange={handleFieldValidation}
+                            />
+                        </div>
                     ))}
-                    <Button disabled={!allFieldsValid} onClick={handleSubmit}>
-                        Send It !!
-                    </Button>
+                    <div className={styles.formRow}>
+                        <Button
+                            disabled={!allFieldsValid}
+                            onClick={handleSubmit}
+                        >
+                            Send It !!
+                        </Button>
+                    </div>
+                    <div className={styles.formRow}>
+                        <Button onClick={handleClear}>Clear form</Button>
+                    </div>
                 </>
             ) : (
                 <div>
