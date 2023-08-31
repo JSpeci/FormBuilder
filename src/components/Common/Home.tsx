@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { PublicRoutes } from '../infrastructure/routes'
 import { CompoundButton, makeStyles } from '@fluentui/react-components'
 import { AddSquare48Regular, Dentist48Regular } from '@fluentui/react-icons'
+import { PublicRoutes } from '../../infrastructure/routes'
 
 const useStyles = makeStyles({
     homeStack: {
@@ -20,7 +20,7 @@ const useStyles = makeStyles({
     },
 })
 
-export const FormSelector: React.FunctionComponent = () => {
+export const Home: React.FunctionComponent = () => {
     const navigate = useNavigate()
     const styles = useStyles()
 
@@ -32,7 +32,7 @@ export const FormSelector: React.FunctionComponent = () => {
                     secondaryContent="Lets build some awesome form"
                     size="large"
                     onClick={() => navigate(PublicRoutes.FormBuilder)}
-                    iconPosition="after"
+                    iconPosition="before"
                     className={styles.item}
                 >
                     Form Builder
@@ -41,7 +41,7 @@ export const FormSelector: React.FunctionComponent = () => {
                     icon={<Dentist48Regular />}
                     secondaryContent="Lets test some amazing form"
                     size="large"
-                    iconPosition="after"
+                    iconPosition="before"
                     onClick={() => navigate(PublicRoutes.FormTester)}
                     className={styles.item}
                 >

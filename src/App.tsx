@@ -1,9 +1,9 @@
 import { Routes, Route } from 'react-router'
 import { BrowserRouter } from 'react-router-dom'
 import { PublicRoutes } from './infrastructure/routes'
-import { FormBuilder } from './components/FormBuilder'
-import { FormTester } from './components/FormTester'
-import { Home } from './components/Home'
+import { FormBuilder } from './components/FormBuilder/FormBuilder'
+import { FormTester } from './components/FormTester/FormTester'
+import { Home } from './components/Common/Home'
 
 function App() {
     return (
