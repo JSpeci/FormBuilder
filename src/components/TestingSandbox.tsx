@@ -24,32 +24,59 @@ const useStyles = makeStyles({
     },
 })
 
+interface ValidationState {
+    isValid: boolean | undefined
+    message: string | undefined
+}
+
 export const TestingSandbox = () => {
     const styles = useStyles()
     const { selectedFormForTesting } = useFormContext()
 
-    const [validationStates, setValidationStates] = useState<
-        (boolean | undefined)[]
-    >(
+    const getEmptyValidatonStates = () =>
         selectedFormForTesting
-            ? selectedFormForTesting.formQuestions.map(() => undefined)
+            ? selectedFormForTesting.formQuestions.map(() => {
+                  return {
+                      isValid: undefined,
+                      message: undefined,
+                  }
+              })
+            : []
+
+    const [validationStates, setValidationStates] = useState<ValidationState[]>(
+        getEmptyValidatonStates()
+    )
+
+    const [values, setValues] = useState<string[]>(
+        selectedFormForTesting
+            ? selectedFormForTesting.formQuestions.map(() => '')
             : []
     )
 
     // Update validationStates when selectedFormForTesting changes
     useEffect(() => {
         if (selectedFormForTesting) {
-            setValidationStates(
-                selectedFormForTesting.formQuestions.map(() => undefined)
-            )
+            setValidationStates(getEmptyValidatonStates())
         }
     }, [selectedFormForTesting])
 
-    const handleFieldValidation = (index: number, isValid: boolean) => {
+    const handleFieldValidation = (
+        index: number,
+        isValid: boolean | undefined,
+        message: string | undefined
+    ) => {
         setValidationStates((prevStates) => {
             const updatedStates = [...prevStates]
-            updatedStates[index] = isValid
+            updatedStates[index] = { isValid, message }
             return updatedStates
+        })
+    }
+
+    const handleValueChanged = (index: number, value: string) => {
+        setValues((prevValues) => {
+            const updatedValues = [...prevValues]
+            updatedValues[index] = value
+            return updatedValues
         })
     }
 
@@ -60,7 +87,7 @@ export const TestingSandbox = () => {
     }, [validationStates])
 
     const handleSubmit = () => {
-        if (validationStates.every((v) => v === true)) {
+        if (validationStates.every((v) => v.isValid === true)) {
             alert('All is VALID')
         } else {
             alert('NOT VALIID')
@@ -68,15 +95,8 @@ export const TestingSandbox = () => {
     }
 
     const handleClear = () => {
-        setValidationStates(
-            selectedFormForTesting?.formQuestions.map(() => undefined) || []
-        )
-
-        // If you have controlled components (like Input fields) in FormField component,
-        // you need to clear their values as well
-        selectedFormForTesting?.formQuestions.forEach((fq, index) => {
-            handleFieldValidation(index, false) // Reset validation state to false
-        })
+        setValidationStates(getEmptyValidatonStates())
+        setValues([])
     }
 
     return (
@@ -88,12 +108,19 @@ export const TestingSandbox = () => {
             {selectedFormForTesting ? (
                 <>
                     {selectedFormForTesting.formQuestions.map((fq, index) => (
-                        <div className={styles.formRow}>
+                        <div className={styles.formRow} key={index}>
                             <FormField
-                                key={index}
                                 question={fq}
                                 index={index}
-                                onValueChange={handleFieldValidation}
+                                onValidationChange={handleFieldValidation}
+                                validationState={
+                                    validationStates[index]?.isValid
+                                }
+                                validationMessage={
+                                    validationStates[index]?.message
+                                }
+                                inputValue={values[index]}
+                                onValueChange={handleValueChanged}
                             />
                         </div>
                     ))}

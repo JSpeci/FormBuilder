@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Field, Input, Switch } from '@fluentui/react-components'
 import { FormQuestion, InputType } from '../model/form'
 import { Validator } from '../infrastructure/validator'
@@ -7,71 +7,67 @@ import { ValidationType } from '../validations/validations'
 interface FormFieldProps {
     question: FormQuestion
     index: number
-    onValueChange: (index: number, isValid: boolean) => void
+    validationState: boolean | undefined
+    inputValue: any
+    validationMessage: string | undefined
+    onValidationChange: (
+        index: number,
+        isValid: boolean,
+        message?: string
+    ) => void
+    onValueChange: (index: number, value: any) => void
 }
 
 const FormField: React.FC<FormFieldProps> = ({
     question,
     index,
-    onValueChange: onValidationChange,
+    onValidationChange,
+    onValueChange,
+    inputValue,
+    validationState,
+    validationMessage,
 }) => {
-    const [isValid, setIsValid] = useState<boolean | undefined>(undefined)
-    const [validationMessage, setValidationMessage] = useState<string>('')
+    const handleValidation = (value: any) => {
+        const validationMessages = Validator.validate(
+            value,
+            question.validations || []
+        )
+        const isValid = validationMessages.length === 0
+        onValidationChange(index, isValid, validationMessages.join(', '))
+    }
 
     const handleFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value
+        onValueChange(index, value)
         handleValidation(value)
     }
 
     const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const isChecked = event.target.checked
         onValidationChange(index, isChecked !== undefined)
+        onValueChange(index, isChecked)
 
         const switchMesage = question.validations?.find(
             (fq) => fq.type === ValidationType.IsMandatory
         )?.message
-        setIsValid(isChecked !== undefined)
-        setValidationMessage(isChecked ? '' : switchMesage || '')
+        onValidationChange(index, isChecked !== undefined, switchMesage)
     }
-    const handleValidation = (value: any) => {
-        const validationMessages = Validator.validate(
-            value,
-            question.validations || []
-        )
-        const isValid = validationMessages.length === 0 // Use the updated value
-        setIsValid(isValid)
-        setValidationMessage(validationMessages.join(', '))
-        onValidationChange(index, isValid) // Update validation state directly
-    }
-
-    // Handle validation when question.validations change
-    useEffect(() => {
-        if (question.type === InputType.YesNo) {
-            setValidationMessage('')
-        } else {
-            handleValidation('')
-        }
-        setIsValid(undefined)
-    }, [question.validations])
 
     return (
         <div>
             <Field
                 label={question.question}
                 validationState={
-                    isValid === undefined
+                    validationState === undefined
                         ? 'none'
-                        : isValid
+                        : validationState
                         ? 'success'
                         : 'error'
                 }
-                validationMessage={isValid ? '' : validationMessage}
+                validationMessage={validationState ? '' : validationMessage}
             >
                 {question.type === InputType.YesNo ? (
-                    <Switch
-                        defaultChecked={undefined}
-                        onChange={handleSwitchChange}
-                    />
+                    <Switch onChange={handleSwitchChange} value={inputValue} />
                 ) : (
                     <Input
                         type={
@@ -83,6 +79,7 @@ const FormField: React.FC<FormFieldProps> = ({
                         onBlur={(e) => {
                             handleValidation(e.target.value)
                         }}
+                        value={inputValue || ''}
                     />
                 )}
             </Field>
