@@ -50,48 +50,52 @@ export const TestingSandbox = () => {
 
     return (
         <div className={styles.mainPanel}>
-            <Button onClick={handleSubmit}>Submit</Button>
             {selectedFormForTesting ? (
-                selectedFormForTesting.formQuestions.map((fq, index) => (
-                    <div key={index}>
-                        <Field
-                            label={fq.question}
-                            validationState={
-                                validationStates[index] ? 'success' : 'error'
-                            }
-                            validationMessage={
-                                validationStates[index]
-                                    ? ''
-                                    : 'This is an error message.'
-                            }
-                        >
-                            {fq.type === InputType.YesNo ? (
-                                <Switch
-                                    onChange={(e) =>
-                                        handleFieldValidation(
-                                            index,
-                                            e.target.checked
-                                        )
-                                    }
-                                />
-                            ) : (
-                                <Input
-                                    type={
-                                        fq.type === InputType.Numeric
-                                            ? 'number'
-                                            : 'text'
-                                    }
-                                    onChange={(e) =>
-                                        handleFieldValidation(
-                                            index,
-                                            e.target.value.trim() !== ''
-                                        )
-                                    }
-                                />
-                            )}
-                        </Field>
-                    </div>
-                ))
+                <>
+                    {selectedFormForTesting.formQuestions.map((fq, index) => (
+                        <div key={index}>
+                            <Field
+                                label={fq.question}
+                                validationState={
+                                    validationStates[index]
+                                        ? 'success'
+                                        : 'error'
+                                }
+                                validationMessage={
+                                    validationStates[index]
+                                        ? ''
+                                        : 'This is an error message.'
+                                }
+                            >
+                                {fq.type === InputType.YesNo ? (
+                                    <Switch
+                                        onChange={(e) =>
+                                            handleFieldValidation(
+                                                index,
+                                                e.target.checked
+                                            )
+                                        }
+                                    />
+                                ) : (
+                                    <Input
+                                        type={
+                                            fq.type === InputType.Numeric
+                                                ? 'number'
+                                                : 'text'
+                                        }
+                                        onChange={(e) =>
+                                            handleFieldValidation(
+                                                index,
+                                                e.target.value.trim() !== ''
+                                            )
+                                        }
+                                    />
+                                )}
+                            </Field>
+                        </div>
+                    ))}
+                    <Button onClick={handleSubmit}>Validate</Button>
+                </>
             ) : (
                 <div>
                     <Subtitle1>Choose some formular</Subtitle1>
