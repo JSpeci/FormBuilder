@@ -1,7 +1,7 @@
 import { makeStyles } from '@fluentui/react-components'
 import { FormEditor } from './FormEditor'
 import { FormProvider } from '../contexts/FormContext'
-import { SideMenu } from './SideMenu'
+import { FomBuilderSideMenu } from './FomBuilderSideMenu'
 
 const useStyles = makeStyles({
     formBuilderContainer: {
@@ -16,7 +16,7 @@ export const FormBuilder = () => {
     return (
         <div className={styles.formBuilderContainer}>
             <FormProvider>
-                <SideMenu />
+                <FomBuilderSideMenu />
                 <FormEditor />
             </FormProvider>
         </div>

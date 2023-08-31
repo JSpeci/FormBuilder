@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom'
 import { PublicRoutes } from '../infrastructure/routes'
 import { useFormContext } from '../contexts/FormContext'
 import { DangerDialog } from './DangerDialog'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { FormSelector } from './FormSelector'
 
 const useStyles = makeStyles({
@@ -32,10 +32,11 @@ const useStyles = makeStyles({
     },
 })
 
-export const SideMenu = () => {
+export const FomBuilderSideMenu: React.FC = () => {
     const styles = useStyles()
     const navigate = useNavigate()
-    const { createNewForm, dangerouslyRewriteForms } = useFormContext()
+    const { createNewForm, dangerouslyRewriteForms, setFormForEditing } =
+        useFormContext()
     const [visibleDialog, setVisibleDialog] = useState(false)
 
     return (
@@ -78,7 +79,7 @@ export const SideMenu = () => {
                 Generate random stuff
             </CompoundButton>
             <Divider className={styles.menuItem} appearance="strong" />
-            <FormSelector />
+            <FormSelector onSelect={setFormForEditing} />
         </div>
     )
 }

@@ -13,9 +13,13 @@ const useStyles = makeStyles({
     },
 })
 
-export const FormSelector = () => {
+interface FormSelectorProps {
+    onSelect: (formId: number) => void
+}
+
+export const FormSelector: React.FC<FormSelectorProps> = (props) => {
     const styles = useStyles()
-    const { forms, setFormForEditing } = useFormContext()
+    const { forms } = useFormContext()
 
     return (
         <>
@@ -26,7 +30,7 @@ export const FormSelector = () => {
                     size="small"
                     className={styles.menuItem}
                     onClick={() => {
-                        setFormForEditing(form.id)
+                        props.onSelect(form.id)
                     }}
                     key={form.id}
                 >
