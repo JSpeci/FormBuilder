@@ -10,11 +10,11 @@ import {
     AddSquare48Regular,
 } from '@fluentui/react-icons'
 import { useNavigate } from 'react-router-dom'
-import { PublicRoutes } from '../infrastructure/routes'
-import { useFormContext } from '../contexts/FormContext'
-import { DangerDialog } from './DangerDialog'
+import { PublicRoutes } from '../../infrastructure/routes'
+import { useFormContext } from '../../contexts/FormContext'
+import { DangerDialog } from '../Common/DangerDialog'
 import React, { useState } from 'react'
-import { FormSelector } from './FormSelector'
+import { FormSelector } from '../Common/FormSelector'
 
 const useStyles = makeStyles({
     leftMenu: {
@@ -32,7 +32,7 @@ const useStyles = makeStyles({
     },
 })
 
-export const FomBuilderSideMenu: React.FC = () => {
+export const FormBuilderSideMenu: React.FC = () => {
     const styles = useStyles()
     const navigate = useNavigate()
     const { createNewForm, dangerouslyRewriteForms, setFormForEditing } =

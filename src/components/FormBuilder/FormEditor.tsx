@@ -5,11 +5,11 @@ import {
     makeStyles,
     shorthands,
 } from '@fluentui/react-components'
-import { QuestionBuilder } from './QuestionBuilder/QuestionBuilder'
+import { useFormContext } from '../../contexts/FormContext'
+import { NewQuestionContextProvider } from '../../contexts/NewQuestionContext'
+import { QuestionBuilder } from './QuestionBuilder'
 import { FormQuestions } from './QuestionTable/FormQuestions'
-import { useFormContext } from '../contexts/FormContext'
 import { FormGeneralInfo } from './FormGeneralInfo'
-import { NewQuestionContextProvider } from '../contexts/NewQuestionContext'
 
 const useStyles = makeStyles({
     mainPanel: {

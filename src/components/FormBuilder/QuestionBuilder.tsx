@@ -9,7 +9,7 @@ import {
 } from '@fluentui/react-components'
 import { useId } from '@fluentui/react-components'
 import { Add48Regular } from '@fluentui/react-icons'
-import { TypeSelectorDropdown } from '../TypeSelectorDropdown'
+import { TypeSelectorDropdown } from '../Common/TypeSelectorDropdown'
 import { useNewQuestionContext } from '../../contexts/NewQuestionContext'
 import { useState } from 'react'
 import { InputType } from '../../model/form'

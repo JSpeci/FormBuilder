@@ -12,9 +12,9 @@ import {
     useId,
 } from '@fluentui/react-components'
 import { Delete28Regular } from '@fluentui/react-icons'
-import { FormModel } from '../model/form'
+import { FormModel } from '../../model/form'
 import { useEffect, useState } from 'react'
-import { formatDateTime } from '../infrastructure/helpers'
+import { formatDateTime } from '../../infrastructure/helpers'
 
 const useStyles = makeStyles({
     mainPanel: {

@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { PublicRoutes } from '../infrastructure/routes'
 import { CompoundButton, makeStyles } from '@fluentui/react-components'
 import { AddSquare48Regular, Dentist48Regular } from '@fluentui/react-icons'
+import { PublicRoutes } from '../../infrastructure/routes'
 
 const useStyles = makeStyles({
     homeStack: {

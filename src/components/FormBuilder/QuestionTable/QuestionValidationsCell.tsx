@@ -10,14 +10,20 @@ import {
     MenuTrigger,
     Button,
 } from '@fluentui/react-components'
-import { ValidationRule, ValidationType } from '../../validations/validations'
+import {
+    ValidationRule,
+    ValidationType,
+} from '../../../validations/validations'
 import { Add16Regular } from '@fluentui/react-icons'
-import { useFormContext } from '../../contexts/FormContext'
+import { useFormContext } from '../../../contexts/FormContext'
 import { useState } from 'react'
-import { useEditValidationContext } from '../../contexts/EditValidationContext'
+import { useEditValidationContext } from '../../../contexts/EditValidationContext'
 import { ValidationDetailDialog } from './ValidationDetailDialog'
-import { generateId } from '../../infrastructure/generateId'
-import { InputType, inputTypesPossibleValidationTypes } from '../../model/form'
+import { generateId } from '../../../infrastructure/generateId'
+import {
+    InputType,
+    inputTypesPossibleValidationTypes,
+} from '../../../model/form'
 const useStyles = makeStyles({
     container: {
         display: 'flex',

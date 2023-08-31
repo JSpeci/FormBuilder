@@ -1,7 +1,7 @@
 import { CompoundButton, makeStyles } from '@fluentui/react-components'
 import { Form48Regular } from '@fluentui/react-icons'
-import { FormModel } from '../model/form'
-import { useFormContext } from '../contexts/FormContext'
+import { FormModel } from '../../model/form'
+import { useFormContext } from '../../contexts/FormContext'
 
 const useStyles = makeStyles({
     menuItem: {

@@ -28,12 +28,12 @@ export class Validator {
                     }
                     break
                 case ValidationType.GreaterThan:
-                    if (rule.numericValue && value <= rule.numericValue) {
+                    if (rule.numericValue && value < rule.numericValue) {
                         validationMessages.push(rule.message)
                     }
                     break
                 case ValidationType.LessThan:
-                    if (rule.numericValue && value >= rule.numericValue) {
+                    if (rule.numericValue && value > rule.numericValue) {
                         validationMessages.push(rule.message)
                     }
                     break

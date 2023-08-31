@@ -1,8 +1,8 @@
 import React from 'react'
 import { Field, Input, Switch } from '@fluentui/react-components'
-import { FormQuestion, InputType } from '../model/form'
-import { Validator } from '../infrastructure/validator'
-import { ValidationType } from '../validations/validations'
+import { FormQuestion, InputType } from '../../model/form'
+import { Validator } from '../../infrastructure/validator'
+import { ValidationType } from '../../validations/validations'
 
 interface FormFieldProps {
     question: FormQuestion

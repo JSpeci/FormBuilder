@@ -5,10 +5,9 @@ import {
 } from '@fluentui/react-components'
 import { Home48Regular } from '@fluentui/react-icons'
 import { useNavigate } from 'react-router-dom'
-import { PublicRoutes } from '../infrastructure/routes'
-import React from 'react'
-import { FormSelector } from './FormSelector'
-import { useFormContext } from '../contexts/FormContext'
+import { useFormContext } from '../../contexts/FormContext'
+import { PublicRoutes } from '../../infrastructure/routes'
+import { FormSelector } from '../Common/FormSelector'
 
 const useStyles = makeStyles({
     leftMenu: {

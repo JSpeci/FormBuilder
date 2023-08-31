@@ -14,13 +14,16 @@ import {
     useId,
     Subtitle2,
 } from '@fluentui/react-components'
-import { ValidationRule, ValidationType } from '../../validations/validations'
+import {
+    ValidationRule,
+    ValidationType,
+} from '../../../validations/validations'
 import {
     isValidationOnlyOneInQuestion,
     isValidationTypeNumeric,
-} from '../../model/form'
+} from '../../../model/form'
 import { useEffect, useState } from 'react'
-import { TypeSelectorDropdown } from '../TypeSelectorDropdown'
+import { TypeSelectorDropdown } from '../../Common/TypeSelectorDropdown'
 
 const useStyles = makeStyles({
     confirmDialogButton: {

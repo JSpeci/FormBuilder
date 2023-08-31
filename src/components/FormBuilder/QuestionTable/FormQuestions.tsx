@@ -1,8 +1,8 @@
 import React from 'react'
 import { Subtitle1, makeStyles, shorthands } from '@fluentui/react-components'
-import { FormQuestion } from '../../model/form'
+import { FormQuestion } from '../../../model/form'
 import { QuestionsTable } from './QuestionsTable'
-import { EditValidationContextProvider } from '../../contexts/EditValidationContext'
+import { EditValidationContextProvider } from '../../../contexts/EditValidationContext'
 
 const useStyles = makeStyles({
     questions: {
