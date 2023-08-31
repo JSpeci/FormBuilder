@@ -50,11 +50,16 @@ export const FormGeneralInfo: React.FunctionComponent<FormDetailProps> = (
 
     const [name, setName] = useState(model.name)
     const [description, setDescription] = useState(model.description)
+    const [isInputValid, setIsInputValid] = useState(false)
 
     useEffect(() => {
         setName(model.name)
         setDescription(model.description || '')
     }, [model])
+
+    useEffect(() => {
+        setIsInputValid(name.trim() !== '')
+    }, [name, description])
 
     return (
         <div className={styles.mainPanel}>
@@ -87,7 +92,10 @@ export const FormGeneralInfo: React.FunctionComponent<FormDetailProps> = (
                 <Subtitle2>With id {model.id}</Subtitle2>
             </div>
             <div className={styles.item}>
-                <Button onClick={() => props.onSave(name, description || '')}>
+                <Button
+                    disabled={!isInputValid}
+                    onClick={() => props.onSave(name, description || '')}
+                >
                     Save Changes
                 </Button>
             </div>

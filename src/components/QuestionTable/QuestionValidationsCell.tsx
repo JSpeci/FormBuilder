@@ -74,7 +74,7 @@ export const QuestionValidationsCell: React.FunctionComponent<
             message: 'Answer is mandatory',
             validationId: generateId(),
             numericValue: undefined,
-            textValue: undefined,
+            textValue: '',
         }
         startEditingValidation(newValidation, true)
         setIsEditDialogOpen(true)

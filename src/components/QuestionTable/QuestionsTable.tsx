@@ -122,9 +122,9 @@ const columnSizingOptions: TableColumnSizingOptions = {
         idealWidth: 250,
     },
     validations: {
-        defaultWidth: 700,
-        minWidth: 600,
-        idealWidth: 750,
+        defaultWidth: 300,
+        minWidth: 200,
+        idealWidth: 400,
     },
 }
 
@@ -137,7 +137,6 @@ export const QuestionsTable: React.FC<QuestionsTableProps> = (props) => {
         <DataGrid
             items={props.items}
             columns={columns}
-            sortable
             defaultSortState={defaultSortState}
             resizableColumns
             columnSizingOptions={columnSizingOptions}

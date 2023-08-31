@@ -15,14 +15,11 @@ const useStyles = makeStyles({
     mainPanel: {
         width: '100%',
         ...shorthands.padding('1rem'),
-        backgroundColor: '#ffffff',
         display: 'flex',
         flexDirection: 'column',
     },
-    item: {
-        marginBottom: '1rem',
-        minWidth: '17rem',
-        display: 'flex',
+    chooseSubtitle: {
+        ...shorthands.padding('1rem'),
     },
 })
 
@@ -39,42 +36,40 @@ export const FormEditor = () => {
         <div className={styles.mainPanel}>
             {selectedFormForEditing ? (
                 <>
-                    <div className={styles.item}>
-                        <FormGeneralInfo
-                            model={selectedFormForEditing}
-                            onSave={(n, d) => {
-                                const updated = { ...selectedFormForEditing }
-                                updated.description = d
-                                updated.name = n
-                                updateExistingForm(
-                                    selectedFormForEditing.id,
-                                    updated
-                                )
-                            }}
-                            onDelete={(id: number) => {
-                                deleteForm(id)
-                                setFormForEditing(-1)
-                            }}
-                        />
-                        <NewQuestionContextProvider>
-                            <QuestionBuilder />
-                        </NewQuestionContextProvider>
-                    </div>
-                    <div className={styles.item}>
-                        <Divider appearance="strong" />
-                    </div>
-                    <div className={styles.item}>
-                        {selectedFormForEditing && (
+                    <FormGeneralInfo
+                        model={selectedFormForEditing}
+                        onSave={(n, d) => {
+                            const updated = { ...selectedFormForEditing }
+                            updated.description = d
+                            updated.name = n
+                            updateExistingForm(
+                                selectedFormForEditing.id,
+                                updated
+                            )
+                        }}
+                        onDelete={(id: number) => {
+                            deleteForm(id)
+                            setFormForEditing(-1)
+                        }}
+                    />
+                    <Divider appearance="strong" />
+                    <NewQuestionContextProvider>
+                        <QuestionBuilder />
+                    </NewQuestionContextProvider>
+
+                    {selectedFormForEditing && (
+                        <>
+                            <Divider appearance="strong" />
                             <FormQuestions
                                 formQuestions={
                                     selectedFormForEditing.formQuestions
                                 }
                             />
-                        )}
-                    </div>
+                        </>
+                    )}
                 </>
             ) : (
-                <div className={styles.item}>
+                <div className={styles.chooseSubtitle}>
                     <Subtitle1>Choose some formular</Subtitle1>
                 </div>
             )}

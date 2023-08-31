@@ -5,8 +5,8 @@ import { QuestionsTable } from './QuestionsTable'
 import { EditValidationContextProvider } from '../../contexts/EditValidationContext'
 
 const useStyles = makeStyles({
-    mainPanel: {
-        width: '100%',
+    questions: {
+        width: '80%',
         ...shorthands.padding('1rem'),
         backgroundColor: '#ffffff',
         display: 'flex',
@@ -14,7 +14,6 @@ const useStyles = makeStyles({
     },
     item: {
         marginBottom: '1rem',
-        minWidth: '17rem',
     },
 })
 
@@ -27,7 +26,7 @@ export const FormQuestions: React.FunctionComponent<FormToolProps> = (
 ) => {
     const styles = useStyles()
     return (
-        <div className={styles.mainPanel}>
+        <div className={styles.questions}>
             <div className={styles.item}>
                 <Subtitle1>Questions in form</Subtitle1>
             </div>
