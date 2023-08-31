@@ -1,15 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
     Subtitle1,
-    Field,
-    Input,
-    Switch,
     makeStyles,
     shorthands,
     Button,
 } from '@fluentui/react-components'
 import { useFormContext } from '../contexts/FormContext'
-import { InputType } from '../model/form'
+import FormField from './FormField'
+
 const useStyles = makeStyles({
     mainPanel: {
         width: '30%',
@@ -27,74 +25,61 @@ export const TestingSandbox = () => {
     const styles = useStyles()
     const { selectedFormForTesting } = useFormContext()
 
-    const [validationStates, setValidationStates] = useState(
+    const [validationStates, setValidationStates] = useState<
+        (boolean | undefined)[]
+    >(
         selectedFormForTesting
-            ? selectedFormForTesting.formQuestions.map(() => true)
+            ? selectedFormForTesting.formQuestions.map(() => undefined)
             : []
     )
 
+    // Update validationStates when selectedFormForTesting changes
+    useEffect(() => {
+        if (selectedFormForTesting) {
+            setValidationStates(
+                selectedFormForTesting.formQuestions.map(() => undefined)
+            )
+        }
+    }, [selectedFormForTesting])
+
     const handleFieldValidation = (index: number, isValid: boolean) => {
-        const updatedStates = [...validationStates]
-        updatedStates[index] = isValid
-        setValidationStates(updatedStates)
+        setValidationStates((prevStates) => {
+            const updatedStates = [...prevStates]
+            updatedStates[index] = isValid
+            return updatedStates
+        })
     }
 
+    const [allFieldsValid, setAllFieldsValid] = useState<boolean>(false)
+
+    useEffect(() => {
+        setAllFieldsValid(validationStates.every((state) => state))
+    }, [validationStates])
+
     const handleSubmit = () => {
-        const allFieldsValid = validationStates.every((state) => state)
-        if (allFieldsValid) {
-            // Perform your submit logic
+        if (validationStates.every((v) => v === true)) {
+            alert('All is VALID')
         } else {
-            // Show error message or take appropriate action
+            alert('NOT VALIID')
         }
     }
 
     return (
         <div className={styles.mainPanel}>
+            <Subtitle1>{selectedFormForTesting?.name}</Subtitle1>
             {selectedFormForTesting ? (
                 <>
                     {selectedFormForTesting.formQuestions.map((fq, index) => (
-                        <div key={index}>
-                            <Field
-                                label={fq.question}
-                                validationState={
-                                    validationStates[index]
-                                        ? 'success'
-                                        : 'error'
-                                }
-                                validationMessage={
-                                    validationStates[index]
-                                        ? ''
-                                        : 'This is an error message.'
-                                }
-                            >
-                                {fq.type === InputType.YesNo ? (
-                                    <Switch
-                                        onChange={(e) =>
-                                            handleFieldValidation(
-                                                index,
-                                                e.target.checked
-                                            )
-                                        }
-                                    />
-                                ) : (
-                                    <Input
-                                        type={
-                                            fq.type === InputType.Numeric
-                                                ? 'number'
-                                                : 'text'
-                                        }
-                                        onChange={(e) =>
-                                            handleFieldValidation(
-                                                index,
-                                                e.target.value.trim() !== ''
-                                            )
-                                        }
-                                    />
-                                )}
-                            </Field>
-                        </div>
+                        <FormField
+                            key={index}
+                            question={fq}
+                            index={index}
+                            onValueChange={handleFieldValidation}
+                        />
                     ))}
-                    <Button onClick={handleSubmit}>Validate</Button>
+                    <Button disabled={!allFieldsValid} onClick={handleSubmit}>
+                        Send It !!
+                    </Button>
                 </>
             ) : (
                 <div>
