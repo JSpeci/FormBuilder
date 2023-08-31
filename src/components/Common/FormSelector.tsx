@@ -14,7 +14,7 @@ const useStyles = makeStyles({
 })
 
 interface FormSelectorProps {
-    onSelect: (formId: number) => void
+    onSelect: (formId: string) => void
 }
 
 export const FormSelector: React.FC<FormSelectorProps> = (props) => {

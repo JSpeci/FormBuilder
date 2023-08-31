@@ -38,7 +38,7 @@ const useStyles = makeStyles({
 })
 
 interface QuestionValidationsCellProps {
-    questionId: number
+    questionId: string
     inputType: InputType
     validations: ValidationRule[]
 }

@@ -15,19 +15,19 @@ export type FormsContextType = {
     dangerouslyRewriteForms: () => void
     selectedFormForEditing?: FormModel
     selectedFormForTesting?: FormModel
-    setFormForEditing: (id: number) => void
-    setFormForTesting: (id: number) => void
-    createNewForm: () => number
-    deleteForm: (id: number) => void
-    updateExistingForm: (id: number, updated: FormModel) => void
-    deleteQuestionFromSelectedForm: (questionId: number) => void
-    deleteValidationFromSelectedForm: (validationId: number) => void
+    setFormForEditing: (id: string) => void
+    setFormForTesting: (id: string) => void
+    createNewForm: () => string
+    deleteForm: (id: string) => void
+    updateExistingForm: (id: string, updated: FormModel) => void
+    deleteQuestionFromSelectedForm: (questionId: string) => void
+    deleteValidationFromSelectedForm: (validationId: string) => void
     editValidationInSelectedForm: (
-        questionId: number,
+        questionId: string,
         updatedValidation: ValidationRule
     ) => void
     addValidationToSelectedForm: (
-        questionId: number,
+        questionId: string,
         updatedValidation: ValidationRule
     ) => void
 }
@@ -62,19 +62,19 @@ export const FormProvider: React.FC<FormProviderProps> = (
         return id
     }
 
-    const deleteForm = (id: number) => {
+    const deleteForm = (id: string) => {
         const updatedArray = forms.filter((obj: FormModel) => obj.id !== id)
         setForms([...updatedArray])
     }
 
-    const updateExistingForm = (id: number, updated: FormModel) => {
+    const updateExistingForm = (id: string, updated: FormModel) => {
         const updatedArray = forms.map((obj: FormModel) =>
             obj.id === id ? updated : obj
         )
         setForms([...updatedArray])
     }
 
-    const deleteQuestionFromSelectedForm = (questionId: number) => {
+    const deleteQuestionFromSelectedForm = (questionId: string) => {
         const affectedForm: FormModel = forms.find((form: FormModel) =>
             form.formQuestions.some((q) => q.questionId === questionId)
         )
@@ -92,7 +92,7 @@ export const FormProvider: React.FC<FormProviderProps> = (
         }
     }
 
-    const deleteValidationFromSelectedForm = (validationId: number) => {
+    const deleteValidationFromSelectedForm = (validationId: string) => {
         // Yeah, this is ugly. I rely on, that the data will not be large and deep
         // solution is to flatten the data structure maybe
         const affectedQuestion = selectedFormForEditing?.formQuestions.find(
@@ -129,7 +129,7 @@ export const FormProvider: React.FC<FormProviderProps> = (
     }
 
     const editValidationInSelectedForm = (
-        questionId: number,
+        questionId: string,
         updatedValidation: ValidationRule
     ) => {
         if (selectedFormForEditing) {
@@ -165,7 +165,7 @@ export const FormProvider: React.FC<FormProviderProps> = (
         }
     }
     const addValidationToSelectedForm = (
-        questionId: number,
+        questionId: string,
         newValidation: ValidationRule
     ) => {
         if (selectedFormForEditing) {
@@ -213,12 +213,12 @@ export const FormProvider: React.FC<FormProviderProps> = (
         }
     }
 
-    const setFormForTesting = (id: number | undefined) => {
+    const setFormForTesting = (id: string | undefined) => {
         const found = (forms as FormModel[]).find((f: FormModel) => f.id === id)
         found && setSelectedFormForTesting(found)
     }
 
-    const setFormForEditing = (id: number | undefined) => {
+    const setFormForEditing = (id: string | undefined) => {
         const found = (forms as FormModel[]).find((f: FormModel) => f.id === id)
         setSelectedFormForEditing(found)
     }

@@ -47,9 +47,9 @@ export const FormEditor = () => {
                                 updated
                             )
                         }}
-                        onDelete={(id: number) => {
+                        onDelete={(id: string) => {
                             deleteForm(id)
-                            setFormForEditing(-1)
+                            setFormForEditing('')
                         }}
                     />
                     <Divider appearance="strong" />

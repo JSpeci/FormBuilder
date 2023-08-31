@@ -7,14 +7,14 @@ export enum InputType {
 }
 
 export type FormQuestion = {
-    questionId: number
+    questionId: string
     type: InputType
     question: string
     validations?: ValidationRule[]
 }
 
 export type FormModel = {
-    id: number
+    id: string
     name: string
     description?: string
     created: Date

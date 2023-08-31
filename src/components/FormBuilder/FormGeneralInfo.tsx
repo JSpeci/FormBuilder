@@ -37,7 +37,7 @@ const useStyles = makeStyles({
 interface FormDetailProps {
     model: FormModel
     onSave: (name: string, description: string) => void
-    onDelete: (id: number) => void
+    onDelete: (id: string) => void
 }
 
 export const FormGeneralInfo: React.FunctionComponent<FormDetailProps> = (
